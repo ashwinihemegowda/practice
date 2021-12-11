@@ -1,0 +1,1396 @@
+No alt text provided for this image
+No alt text provided for this image
+No alt text provided for this image
+No alt text provided for this image
+No alt text provided for this image
+No alt text provided for this image
+No alt text provided for this image
+No alt text provided for this image
+ 
+
+How is Kubernetes related to Docker? 
+Docker is a containerization platform and Kubernetes is a container management 
+(orchestrator) tool for container platforms like Docker. 
+Kubernetes uses a Container Runtime Interface (CRI) plugin interface which enables 
+kubelet to use a wide variety of container runtimes, without the need to recompile. 
+Kubernetes could use any container runtime that implements CRI to manage pods, 
+containers and container images 
+From docker images we are creating containers and Kubernetes is used to manages these 
+containers 
+ 
+
+ 
+
+ 
+
+ 
+
+Master nodes 
+Worker nodes 
+- etCd 
+Controllers 
+Scheduler 
+pod 
+Pod 
+d 
+Opti al Add Ons 
+(DNS. UI...) 
+d 
+a Add 
+IONS. UI...' 
+(kube.proxy) 
+ 
+
+Master Node 
+1. 
+• 
+• 
+• 
+The management of a cluster is the responsibility of the master node as it is the first point of contact 
+for almost all administrative tasks for the cluster. 
+Depending upon the setup, there will be one or more master nodes in a cluster. This is done to keep 
+an eye on the failure tolerance. 
+master node comprises different components such as Controller-manager, ETCD, Scheduler, and API 
+Server. 
+2. 
+3. 
+• 
+• 
+• 
+API Server: It is the first point of contact for the entirety of the REST commands, which are used 
+to manage and manipulate the cluster. 
+Scheduler: The scheduler, as its name suggests, is responsible for scheduling tasks to the worker 
+nodes. It also keeps the resource utilization data for each of the slave nodes. 
+ETCD: It is majorly employed for shared configuration, as well as for service discovery. It is 
+basically a distributed key-value store. 
+Kubernetes uses etcd as a key-value database store. It stores the configuration of the Kubernetes 
+cluster in etcd. 
+It also stores the actual state of the system and the desired state of the system in etcd. 
+It then uses etcd's watch functionality to monitor changes to either of these two things. If they 
+diverge, Kubernetes makes changes to reconcile the actual state and the desired state. 
+ 
+
+4. 
+Controller-manager: It is a daemon that is responsible for regulating the cluster in Kubernetes, 
+and it also manages various other control loops that are non-terminating. 
+Replication controller: Manages pod replication 
+Node controller: Responsible for noticing and responding when nodes go down. 
+Job controller: Watches for Job objects that represent one-off tasks, then creates Pods to run 
+those tasks to completion. 
+Endpoints controller: Populates the Endpoints object (that is, joins Services & Pods). 
+Service Account & Token controllers: Create default accounts and API access tokens for 
+new namespaces 
+ 
+
+new namespaces 
+Worker/Slave Nodes 
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+Worker or slave nodes consist of all the needed services that are required to manage 
+networking among containers. 
+The services communicate with the master node and allocate resources to scheduled 
+containers. 
+worker nodes have the following components: 
+Docker container 
+• Docker must be initialized and run on each worker node in a cluster. 
+• Docker containers run on each worker node, and they also run the pods that are configured. 
+Kubelet 
+The job ofkubelet is to get the configuration of pods from the API server. 
+• It is also used to ensure that the mentioned containers are ready and running. 
+Ku be-proxy 
+• Kube-proxy behaves like a network proxy and act as a load balancer for a service on any single 
+worker node for pods running on the node by implementing east/west load-balancing using NAT 
+in iptables 
+The kube-proxy handles network communications inside or outside the cluster 
+CAdvisor: 
+• Used for monitoring resource usage and performance 
+Label: 
+• Used to identify pods 
+Pods 
+• A pod can be thought of as one or more containers, which can logically run on nodes together. 
+What is a pod? 
+ 
+
+Pod 
+Container 
+1 
+my—app 
+Service 
+DB 
+Node 1 
+Pod: 
+Smallest unit of K8s 
+Abstraction over container 
+Usually I application per Pod 
+Each Pod gets its own IP address 
+New IP address on re-creation 
+Peployment manage Pods 
+Layers of Abstraction 
+Peployment 
+manages a 
+ReplicaSet 
+mnages a .. 
+is an abstraction of .. 
+Container 
+ 
+
+group of one or more containers is called a Pod. 
+Pods are also the simplest unit in the Kubernetes object model, which we can create and deploy. 
+Pods life is short in nature, and they do not have the capability to self-heal by themselves. That is 
+why we use them with controllers, which can handle a Pod's replication, fault tolerance, self-heal, 
+etc. 
+Examples of controllers are Deployments, Replica Sets, Replication Controllers, etc. We attach 
+the Pod's specification to other objects using Pod Templates 
+Limitations of POD 
+A pod is a single entity, and ifit fails, it cannot restart itself. This won't suit most use cases, as we 
+want our applications to be highly available. But Kubernetes has this issue solved by using with 
+controllers 
+ 
+
+
+ 
+
+ 
+
+Key feature of Kubernetes: 
+
+Horizontal Scaling 
+
+Auto Scaling 
+
+Health check & Self-healing 
+
+Load Balancer 
+
+Service Discovery 
+
+Automated rollbacks & rollouts 
+
+Canary Deployment 
+
+
+MASTER/WORK NODE SETUP
+
+
+2cpu and 4gb 
+
+While creating machine enable traffic on all ports 
+
+ 
+
+ 
+
+********************COMMANDS FOR DEMO******************** 
+
+ 
+
+sudo su 
+
+apt-get update 
+
+apt-get install apt-transport-https 
+
+ 
+
+ 
+
+apt install docker.io -y 
+
+docker --version 
+
+systemctl start docker 
+
+systemctl enable docker 
+
+ 
+
+sudo curl -s https://packages.cloud.google.com/apt... | sudo apt-key add  
+
+ 
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg|apt-key add  
+
+ 
+
+Node 1 and master  
+
+nano /etc/apt/sources.list.d/kubernetes.list 
+
+ 
+
+deb http://apt.kubernetes.io/ kubernetes-xenial main 
+
+ 
+
+Or  
+
+ 
+
+  cat <<EOF >/etc/apt/sources.list.d/kubernetes.list 
+
+deb http://apt.kubernetes.io/ kubernetes-xenial main 
+
+EOF 
+
+ 
+
+ 
+
+apt-get update 
+
+ 
+
+apt-get install -y kubelet kubeadm kubectl kubernetes-cni 
+
+ 
+
+Above all commands will run on all vms 
+
+ 
+
+------------------------------------------------------------------------- 
+
+ 
+
+ 
+
+BOOTSTRAPPING THE MASTER NODE (IN MASTER) 
+
+ 
+
+ 
+
+kubeadm init 
+
+  
+
+ 
+
+COPY THE COMMAND TO RUN IN NODES & SAVE IN NOTEPAD 
+
+ 
+
+mkdir -p $HOME/.kube 
+
+cp -i /etc/kubernetes/admin.conf $HOME/.kube/config 
+
+ 
+
+ 
+
+chown $(id -u):$(id -g) $HOME/.kube/config 
+
+ 
+
+ 
+
+Need to check urls 
+
+ 
+
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml 
+
+ 
+
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml 
+
+ 
+
+ 
+
+CONFIGURE WORKER NODES (IN NODES) 
+
+ 
+
+ 
+
+COPY LONG CODE PROVIDED MY MASTER IN NODE NOW LIKE CODE GIVEN BELOW 
+
+ 
+
+ 
+
+e.g- kubeadm join 172.31.6.165:6443 --token kl9fhu.co2n90v3rxtqllrs --discovery-token-ca-cert-hash sha256:b0f8003d23dbf445e0132a53d7aa1922bdef8d553d9eca06e65c928322b3e7c0 
+
+ 
+
+ 
+
+GO TO MASTER AND RUN THIS COMMAND 
+
+ 
+
+kubectl get nodes 
+
+ 
+
+***********************END************************************ 
+
+
+NEW STEPS TO SETUP
+
+
+ apt-get update 
+
+ sudo apt-get install docker.io 
+
+ sudo usermod -aG docker $USER 
+
+  cd /etc/docker/ 
+
+ 
+
+   9 vi daemon.json 
+
+        { 
+
+    "exec-opts": ["native.cgroupdriver=systemd"] 
+
+} 
+
+ 
+
+   10 sudo systemctl daemon-reload 
+
+   11 sudo systemctl restart docker 
+
+ 
+
+ 
+
+ 
+
+    12  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add 
+
+     
+
+ 
+
+   13  sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main" 
+
+ 
+
+  
+
+ 
+
+ 
+
+   14  sudo apt-get install kubeadm kubelet kubectl 
+
+ 
+
+   15  sudo apt-mark hold kubeadm kubelet kubectl 
+
+ 
+
+   13  kubeadm version 
+
+ 
+
+   17  sudo swapoff -a 
+
+   
+
+   18  sudo hostnamectl set-hostname work-node1 
+
+-------------------------------------------------- 
+
+ 
+
+   18  sudo hostnamectl set-hostname master-node 
+
+   23  sudo kubeadm init 
+
+   24  systemctl status kubelet 
+
+ 
+
+  
+
+--------------------------------------  
+
+     kubeadm reset - if you want to make wk node as master  
+
+         then initialize with  
+
+          kubeadm in 
+
+ 
+
+ 
+
+  to check node go register or not 
+
+  kubectl get nodes 
+
+
+LAB WITH MINIKUBES
+
+ 
+
+Hands-On With Docker and Kubernetes 
+
+Minikube is a tool that makes it easy to run Kubernetes locally. 
+
+  
+
+minikube start | minikube (k8s.io) 
+
+  
+
+ 
+
+Allow all traffic to in nsg while creating vm. 
+
+ 
+
+Ubuntu 
+
+ 
+
+sudo su # change to root use  sudo -i  
+
+ 
+
+Now install docker 
+
+ 
+
+sudo apt update && apt -y install docker.io 
+
+ 
+
+Sudo apt upgrade -y  
+
+ 
+
+install Kubectl 
+
+ 
+
+curl -LO https://storage.googleapis.com/kubern... -s https://storage.googleapis.com/kubern... && chmod +x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl 
+
+ 
+
+Which kubectl 
+
+ 
+
+ 
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https 
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - 
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list 
+sudo apt-get update 
+sudo apt-get install -y kubectl 
+
+ 
+
+ 
+
+ 
+
+ 
+
+install Minikube 
+
+ 
+
+curl -Lo minikube https://storage.googleapis.com/miniku... && chmod +x minikube && sudo mv minikube /usr/local/bin/ 
+
+ 
+
+ 
+
+Apt-get install conntract # to work minikube properly , supported file  
+
+ 
+
+Minikube start --vm-drive=none // to start  
+
+ 
+
+Minikube status 
+
+ 
+
+Kubectl version 
+
+ 
+
+Kubectl get nodes 
+
+ 
+
+Your machine ip and details your will get  
+
+ 
+
+Kubectl Describe node node-ip // to see details of node 
+
+ 
+
+ 
+
+ 
+
+ 
+
+In kubertnete we write manifest - yml  
+
+ 
+
+Manifest format .yml/yaml 
+
+--- //optional  
+
+# 
+
+----------------------------------------------------- 
+
+ 
+
+First pod 
+
+*************************************************************************** 
+
+ 
+
+kind: Pod                               
+
+apiVersion: v1                      
+
+metadata: #name of pos                           
+
+  name: testpod                   
+
+spec:                                     
+
+  containers:    # conatinerr in pod                   
+
+    - name: c00   # name of conatoner                   
+
+      image: ubuntu     #which command need to run once started           
+
+      command: ["/bin/bash", "-c", "while true; do echo Hello-World; sleep 5 ; done"]  
+
+  restartPolicy: Never         # Defaults to Always 
+
+ 
+
+Save and quite file 
+
+ 
+
+Kubectl create -f pod1.yml  
+
+ 
+
+kubectl apply -f pod1.yml // create pod and run container  
+
+ 
+
+ 
+
+Kubectl get pods // get details of pods 
+
+ 
+
+ 
+
+Kubectl get pods -o wide //get excact details where or which woker node it got create 
+
+ 
+
+Kctl describe pod namepod #testpod   or 
+
+ 
+
+Kctl describe pod pod/namepod # pod/testpod  
+
+ 
+
+Kctl logs -f testpod # nameofof - to see logs inside pod  
+
+ 
+
+Kubeclt logs -f testpod -c c00 // to check inside container  
+
+ 
+
+ 
+
+Kubectl delete pod testpod # name of pod - to delete pod  
+
+ 
+
+Kubectl delete pod1.yml # delete by podfile  
+
+ 
+
+ 
+
+kubectl exec-i -t my-pod --container main-app -- /bin/bash  // to go inside container in pod 
+
+ 
+
+ 
+
+Kubecelt exec -it testpod -c c02 -- /bin/bash  ==#  
+
+ 
+
+ 
+
+ 
+
+************************************************************************************************ 
+
+Annotation - add extra info  
+
+ 
+
+Metadata: 
+
+ name: testpod 
+
+Annotations: 
+
+  description: this is test message for other plp 
+
+ 
+
+ 
+
+ 
+
+MULTI CONTAINER POD ENVIRONMENT  
+
+Pod2.yml 
+
+ 
+
+kind: Pod 
+
+apiVersion: v1 
+
+metadata: 
+
+  name: testpod3 
+
+spec: 
+
+  containers: 
+
+    - name: c00 
+
+      image: ubuntu 
+
+      command: ["/bin/bash", "-c", "while true; do echo HTBS ; sleep 5 ; done"] 
+
+    - name: c01 
+
+      image: ubuntu 
+
+      command: ["/bin/bash", "-c", "while true; do echo Hello-world; sleep 5 ; done"] 
+
+ 
+
+ 
+
+2/2 // to containers in pod 
+
+ 
+
+ 
+
+Kubectl logs -f testpod3 -c c00 
+
+ 
+
+Kubectl exec testpod3 -it -c c00 -- /bin/bash # to go inside container  
+
+Kubectl exec testpod3 -it -c c00 -- hostname -i # to get ip address 
+
+ 
+
+Ps 
+
+ 
+
+Ps -ef // to check docker commands inside containers  
+
+ 
+
+Exit 
+
+ 
+
+-f pod2.yml delete by file name 
+
+ 
+
+ 
+
+ 
+
+************************************************************************************************ 
+
+ 
+
+POD ENVIRONMENT  VARIABLES 
+
+ 
+
+ 
+
+kind: Pod 
+
+apiVersion: v1 
+
+metadata: 
+
+  name: environments 
+
+spec: 
+
+  containers: 
+
+    - name: c00 
+
+      image: ubuntu 
+
+      command: ["/bin/bash", "-c", "while true; do echo Hello-wolrd; sleep 5 ; done"] 
+
+      env:                        # List of environment variables to be used inside the conatiner 
+
+       - name: MYNAME 
+
+         value: THBS 
+
+ 
+
+:wq  
+
+ 
+
+Create pod by command  
+
+Get pods 
+
+ 
+
+Get inside conatiner  
+
+ 
+
+Env # to list info about  
+
+ 
+
+Echo $MYNAME 
+
+ 
+
+Exit 
+
+Delete by filename or pod name 
+
+ 
+
+ 
+
+************************************************************************************************ 
+
+ 
+
+POD WITH PORTS 
+
+ 
+
+kind: Pod 
+
+apiVersion: v1 
+
+metadata: 
+
+  name: testpod4 
+
+spec: 
+
+  containers: 
+
+    - name: c00 
+
+      image: httpd 
+
+      ports: 
+
+       - containerPort: 80   
+
+ 
+
+*********************END************************************************** 
+
+Create pods  
+
+ 
+
+Kubectl get pods -o wide  
+
+ 
+
+Curl ip:80 
+
+ 
+
+Delete pod 
+
+ 
+
+Get pods 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Object is the task or work you want to do. 
+
+ 
+
+ 
+
+Relationships between objects 
+
+Pod manages container  
+
+  -    replicasets manages pods 
+
+  -   Services expose pod process to outside world  
+
+ -    Configsmaps and secrete help you to config pod 
+
+ 
+
+You create these and run with kubectl  
+
+ 
+
+State of the object 
+
+Replicas  
+
+Name 
+
+Port 
+
+Volume  
+
+ 
+
+ 
+
+---------------------------------------------------- 
+
+ 
+
+Pod manifest file: 
+
+ 
+
+$ vi hello-pod.yml 
+
+apiVersion: v1 
+
+kind: Pod 
+
+metadata: 
+
+ name: hello-pod 
+
+ labels: 
+
+ zones: prod 
+
+ version: v1 
+
+spec: 
+
+ containers: 
+
+ - name: hello-ctr 
+
+ image: nigelpoulton/pluralsight-docker-ci:latest 
+
+ ports: 
+
+ - containerPort: 8080 
+
+ 
+
+ 
+
+$ kubectl create -f hello-pod.yml 
+
+ 
+
+pod/hello-pod created 
+
+ 
+
+To access our hello-pod/ Replication Controller /Deployment we need to expose the pods though a 
+
+service: 
+
+ 
+
+kubectl expose 
+
+ 
+
+When a pod is created, without a service, we cannot access to the app running within container in  
+
+the pod. The most obvious way is to create a service for the pod either via Load Balancer or NodePort. 
+
+ 
+
+$ kubectl expose pod hello-pod --type=NodePort --target-port=80 -o yaml 
+
+$ kubectl describe pod hello-pod | grep -i ip 
+
+IP: 10.244.0.83 
+
+$ curl http://localhost:30779 
+
+http://10.244.0.83:30779/ 
+
+ 
+
+$ kubectl get svc hello-pod -o wide 
+
+ 
+
+NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE SELECTOR 
+
+hello-pode NodePort 10.107.83.213 <none> 8080:30779/TCP 14m version=v1,zones=prod 
+
+ 
+
+ 
+
+ 
+
+Kubetnets object management  
+
+Direct  command line  
+
+Or write manifest file and run   
+
+ 
+
+ 
+
+
+ 
+
+Kubectl run nginx --image=nginx --port=80 --restart=Never // create pod with cli 
+
+ 
+
+ PODS KUBERNETES WORKLOAD
+
+
+ 
+
+Kubernetes workloads 
+
+ 
+
+Pod 
+
+– Replication controllers 
+
+– Deployments, Replica sets 
+
+– Jobs and CronJobs 
+
+– DaemonSets 
+
+ 
+
+
+ 
+
+
+ 
+
+
+ 
+
+TYPES OF OBJECT
+
+ 
+
+
+ 
+
+ 
+
+ 
+
+Replication Controller (rc) 
+
+RC is a controller that is part of the Master Node’s Controller Manager. 
+
+It makes sure the specified number of replicas for a Pod is running at any given point in time.  
+
+Available in master 
+
+ReplicaSet 
+
+A ReplicaSet (rs) is the next-generation ReplicationController. 
+
+Replica Sets support both equality- and set-based Selectors, whereas Replication Controllers only support  
+
+equality-based Selectors.  
+
+Available in deployment  
+
+DaemonSet 
+
+DaemonSets manage groups of replicated Pods 
+
+• DaemonSets works on one-Pod-per-node mode 
+
+ 
+
+LABELS SELECTORS REPLICATION CONTROLLER AND REPLICASET
+
+
+ 
+
+ 
+
+
+ 
+
+adpspl-mac36:~ vbirada$ kubectl get pod -l 'env in (prod)' 
+
+NAME READY STATUS RESTARTS AGE 
+
+example-pod 1/1 Running 0 18h 
+
+example-pod1 1/1 Running 0 41m 
+
+adpspl-mac36:~ vbirada$ kubectl get pod -l 'env in (prod,dev)' 
+
+NAME READY STATUS RESTARTS AGE 
+
+example-pod 1/1 Running 0 18h 
+
+example-pod1 1/1 Running 0 41m 
+
+example-pod2 1/1 Running 0 27m 
+
+example-pod3 1/1 Running 0 27m 
+
+Here env in (prod,dev) the comma operator acts as a OR operator. That is it will list pods which are  
+
+in prod or dev. 
+
+ 
+
+ 
+
+ 
+
+Kubectl Get pods --show-labels 
+
+ 
+
+ 
+
+EXAMPLE OF LABELS 
+
+Try on label scenarios  
+
+ 
+
+kind: Pod 
+
+apiVersion: v1 
+
+metadata: 
+
+  name: delhipod 
+
+  labels:                                                    
+
+    env: development 
+
+    class: pods 
+
+spec: 
+
+    containers: 
+
+       - name: c00 
+
+         image: ubuntu 
+
+         command: ["/bin/bash", "-c", "while true; do echo Hello-world; sleep 5 ; done"] 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+*************************************************************************** 
+
+NODE SELECTOR EXAMPLE (we can use this on some cases) 
+
+ 
+
+Which node to select out of all worker node  
+
+We first have to apply label on node -  
+
+ 
+
+ 
+
+kind: Pod 
+
+apiVersion: v1 
+
+metadata: 
+
+  name: nodelabels 
+
+  labels: 
+
+    env: development 
+
+spec: 
+
+    containers: 
+
+       - name: c00 
+
+         image: ubuntu 
+
+         command: ["/bin/bash", "-c", "while true; do echo Hello-world; sleep 5 ; done"] 
+
+    nodeSelector:                                          
+
+       hardware: t2-medium 
+
+ 
+
+ 
+
+Kubectly apply -f pod.yml 
+
+ 
+
+Kubectl get pods 
+
+ 
+
+Descibe pod  
+
+ 
+
+Cubectl get nodes 
+
+ 
+
+Kubectl label nodes nameofnode hardware=t2-medium # to apply label to node 
+
+ 
+
+Delete it 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+***************************************************************************************** 
+
+Scaling  
+
+Replication  
+
+ 
+
+Can't start stopped pod-- but can create same config pods  
+
+ 
+
+Replicas=2 // similar config pod will get created  
+
+ 
+
+ 
+
+ 
+
+EXAMPLE OF REPLICATION CONTROLLER 
+
+If pod failed, crashed, terminated it will keep desire state  
+
+ 
+
+ 
+
+kind: ReplicationController         # object kind RC       
+
+apiVersion: v1 
+
+metadata: 
+
+  name: myreplica #name of object  
+
+spec: 
+
+  replicas: 3      # how many pods need to create       
+
+  selector:        # which pod to watch/belong to rc 
+
+    myname: Surekha     # much match the label                          
+
+  template:      # what will be inside pod that we defind on template           
+
+    metadata: 
+
+      name: testpod6 # name of pof 
+
+      labels:        # label on pof     
+
+        myname: Surekha 
+
+    spec: # what will be inside pod / contaier inside pof 
+
+     containers: 
+
+       - name: c00 
+
+         image: ubuntu 
+
+         command: ["/bin/bash", "-c", "while true; do echo Hello-wolld ; sleep 5 ; done"] 
+
+ 
+
+ 
+
+Kubectl scale --replicas=8 rc -l myname=Surekha // to scale pod  
+
+Kubectl scale --replicas=3 rc -l myname=Surekha // to scale down pod  
+
+ 
+
+Kubectl delete -f myrc.yml 
+
+ 
+
+ 
+
+***************************************************************************************** 
+
+ 
+
+EXAMPLE OF REPLICA SET 
+
+ 
+
+Replica set is a next generation of replication controller  
+
+Replication controller supports equality based selector where as  
+
+RS supports set based selection  - (filtering according to set of values) 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+ 
+
+
+ 
+
+kind: ReplicaSet                                     
+
+apiVersion: apps/v1                             
+
+metadata: 
+
+  name: myrs 
+
+spec: 
+
+  replicas: 2   
+
+  selector:                   
+
+    matchExpressions:                             # these must match the labels 
+
+      - {key: myname, operator: In, values: [surekha, shelake, shelake]} 
+
+      - {key: env, operator: NotIn, values: [production]} 
+
+  template:       
+
+    metadata: 
+
+      name: testpod7 
+
+      labels:               
+
+        myname: surekha 
+
+    spec: 
+
+     containers: 
+
+       - name: c00 
+
+         image: ubuntu 
+
+         command: ["/bin/bash", "-c", "while true; do echo Hello world; sleep 5 ; done"] 
+
+ 
+
+ 

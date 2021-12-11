@@ -1,0 +1,2170 @@
+Docker Image 
+Image 
+the actual package 
+PostgresSQL 
+configuration 
+Start script 
+artifact, that can be moved around 
+not running 
+Docker Container 
+actually start the application 
+container environment is created 
+running 
+ 
+
+ 
+
+What can I use Docker for? 
+
+Fast, consistent delivery of your applications 
+
+ 
+
+Docker architecture 
+
+Docker uses a client-server architecture. The Docker client talks to the Docker daemon, which does the heavy lifting of building, running, and distributing your Docker containers. The Docker client and daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon. The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface. Another Docker client is Docker Compose, that lets you work with applications consisting of a set of containers. 
+
+The Docker daemon 
+
+The Docker daemon (dockerd) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes. A daemon can also communicate with other daemons to manage Docker services. 
+
+The Docker client 
+
+The Docker client (docker) is the primary way that many Docker users interact with Docker. When you use commands such as docker run, the client sends these commands to dockerd, which carries them out. The docker command uses the Docker API. The Docker client can communicate with more than one daemon. 
+
+Docker registries 
+
+A Docker registry stores Docker images. Docker Hub is a public registry that anyone can use, and Docker is configured to look for images on Docker Hub by default. You can even run your own private registry. 
+
+When you use the docker pull or docker run commands, the required images are pulled from your configured registry. When you use the docker push command, your image is pushed to your configured registry. 
+
+Docker objects 
+
+When you use Docker, you are creating and using images, containers, networks, volumes, plugins, and other objects. This section is a brief overview of some of those objects. 
+
+Images 
+
+An image is a read-only template with instructions for creating a Docker container. Often, an image is based on another image, with some additional customization.  
+
+For example, you may build an image which is based on the ubuntu image, but installs the Apache web server and your application, as well as the configuration details needed to make your application run. 
+
+You might create your own images or you might only use those created by others and published in a registry. To build your own image, you create a Dockerfile with a simple syntax for defining the steps needed to create the image and run it. 
+
+ 
+
+ Each instruction in a Dockerfile creates a layer in the image. When you change the Dockerfile and rebuild the image, only those layers which have changed are rebuilt.  
+
+This is part of what makes images so lightweight, small, and fast, when compared to other virtualization technologies. 
+
+ 
+
+Containers 
+
+A container is a runnable instance of an image.  
+
+You can create, start, stop, move, or delete a container using the Docker API or CLI.  
+
+You can connect a container to one or more networks, attach storage to it, or even create a new image based on its current state. 
+
+ 
+
+By default, a container is relatively well isolated from other containers and its host machine.  
+
+You can control how isolated a container’s network, storage, or other underlying subsystems are from other containers or from the host machine. 
+
+A container is defined by its image as well as any configuration options you provide to it when you create or start it. When a container is removed, any changes to its state that are not stored in persistent storage disappear. 
+
+Example docker run command 
+
+The following command runs an ubuntu container, attaches interactively to your local command-line session, and runs /bin/bash. 
+
+$docker run -i-tubuntu /bin/bash 
+
+ 
+
+ 
+
+ 
+
+The underlying technology 
+
+Docker is written in the Go programming language and takes advantage of several features of the Linux kernel to deliver its functionality. Docker uses a technology called namespaces to provide the isolated workspace called the container.  
+
+ 
+
+ 
+
+What is an image? 
+An image is a collection of files + some meta data. 
+(Technically: those files form the root filesystem Of a container.) 
+Images are made Of layers, conceptually stacked on top Of each Other. 
+Each layer can add, change, and remove files. 
+Images can share layers to optimize disk usage, transfer times, and 
+memory use. 
+CO •ner 
+Image 
+references 
+parent 
+image 
+ 
+
+ 
+
+Differences between containers and images 
+An image is a read-only filesystem. 
+A container is an encapsulated set Of processes running in a read-write 
+copy Of that filesystem. 
+• To optimize container boot time, copy-on-write is used instead Of regular 
+copy. 
+docker run starts a container from a given image. 
+s give a couple Of metaphors to illustrate those concepts. 
+ 
+
+Image as stencils 
+Images are like templates or stencils that you can create containers from. 
+ 
+
+Object-oriented programming 
+Images are conceptually similar to classes. 
+Layers are conceptually similar to inheritance. 
+Containers are conceptually similar to instances. 
+ 
+
+If an image is read-only, how do we change it? 
+We don't. 
+We create a new container from that image. 
+• Then we make changes to that container. 
+When we are satisfied with those changes, we transform them into a new 
+layer. 
+A new image is created by stacking the new layer on top Of the Old image. 
+ 
+
+Creating the first images 
+There is a special empty image called scratch. 
+• It allows to build from scratch. 
+The docker import command loads a tarball into Docker. 
+• The imported tarball becomes a standalone image. 
+• That new image has a single layer. 
+Note: you will probably never have to do this yourself. 
+ 
+
+Creating other images 
+docker commit 
+• Saves all the changes made to a container into a new layer. 
+• Creates a new image (effectively a copy Of the container). 
+docker build 
+Performs a repeatable build sequence. 
+• This is the preferred method! 
+We will explain both methods in a moment. 
+ 
+
+ docker build -f dockerfiles/Dockerfile.debug -t myapp_debug . 
+
+ docker build -f dockerfiles/Dockerfile.prod  -t myapp_prod . 
+
+ 
+
+
+
+
+
+DOCKER COMMANDS(SECTIN 2)
+
+Docker Image 
+Image 
+the actual package 
+PostgresSQL 
+configuration 
+Start script 
+artifact, that can be moved around 
+not running 
+Docker Container 
+actually start the application 
+container environment is created 
+running 
+ 
+
+ 
+
+What can I use Docker for? 
+
+Fast, consistent delivery of your applications 
+
+ 
+
+Docker architecture 
+
+Docker uses a client-server architecture. The Docker client talks to the Docker daemon, which does the heavy lifting of building, running, and distributing your Docker containers. The Docker client and daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon. The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface. Another Docker client is Docker Compose, that lets you work with applications consisting of a set of containers. 
+
+The Docker daemon 
+
+The Docker daemon (dockerd) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes. A daemon can also communicate with other daemons to manage Docker services. 
+
+The Docker client 
+
+The Docker client (docker) is the primary way that many Docker users interact with Docker. When you use commands such as docker run, the client sends these commands to dockerd, which carries them out. The docker command uses the Docker API. The Docker client can communicate with more than one daemon. 
+
+Docker registries 
+
+A Docker registry stores Docker images. Docker Hub is a public registry that anyone can use, and Docker is configured to look for images on Docker Hub by default. You can even run your own private registry. 
+
+When you use the docker pull or docker run commands, the required images are pulled from your configured registry. When you use the docker push command, your image is pushed to your configured registry. 
+
+Docker objects 
+
+When you use Docker, you are creating and using images, containers, networks, volumes, plugins, and other objects. This section is a brief overview of some of those objects. 
+
+Images 
+
+An image is a read-only template with instructions for creating a Docker container. Often, an image is based on another image, with some additional customization.  
+
+For example, you may build an image which is based on the ubuntu image, but installs the Apache web server and your application, as well as the configuration details needed to make your application run. 
+
+You might create your own images or you might only use those created by others and published in a registry. To build your own image, you create a Dockerfile with a simple syntax for defining the steps needed to create the image and run it. 
+
+ 
+
+ Each instruction in a Dockerfile creates a layer in the image. When you change the Dockerfile and rebuild the image, only those layers which have changed are rebuilt.  
+
+This is part of what makes images so lightweight, small, and fast, when compared to other virtualization technologies. 
+
+ 
+
+Containers 
+
+A container is a runnable instance of an image.  
+
+You can create, start, stop, move, or delete a container using the Docker API or CLI.  
+
+You can connect a container to one or more networks, attach storage to it, or even create a new image based on its current state. 
+
+ 
+
+By default, a container is relatively well isolated from other containers and its host machine.  
+
+You can control how isolated a container’s network, storage, or other underlying subsystems are from other containers or from the host machine. 
+
+A container is defined by its image as well as any configuration options you provide to it when you create or start it. When a container is removed, any changes to its state that are not stored in persistent storage disappear. 
+
+Example docker run command 
+
+The following command runs an ubuntu container, attaches interactively to your local command-line session, and runs /bin/bash. 
+
+$docker run -i-tubuntu /bin/bash 
+
+ 
+
+ 
+
+ 
+
+The underlying technology 
+
+Docker is written in the Go programming language and takes advantage of several features of the Linux kernel to deliver its functionality. Docker uses a technology called namespaces to provide the isolated workspace called the container.  
+
+ 
+
+ 
+
+What is an image? 
+An image is a collection of files + some meta data. 
+(Technically: those files form the root filesystem Of a container.) 
+Images are made Of layers, conceptually stacked on top Of each Other. 
+Each layer can add, change, and remove files. 
+Images can share layers to optimize disk usage, transfer times, and 
+memory use. 
+CO •ner 
+Image 
+references 
+parent 
+image 
+ 
+
+ 
+
+Differences between containers and images 
+An image is a read-only filesystem. 
+A container is an encapsulated set Of processes running in a read-write 
+copy Of that filesystem. 
+• To optimize container boot time, copy-on-write is used instead Of regular 
+copy. 
+docker run starts a container from a given image. 
+s give a couple Of metaphors to illustrate those concepts. 
+ 
+
+Image as stencils 
+Images are like templates or stencils that you can create containers from. 
+ 
+
+Object-oriented programming 
+Images are conceptually similar to classes. 
+Layers are conceptually similar to inheritance. 
+Containers are conceptually similar to instances. 
+ 
+
+If an image is read-only, how do we change it? 
+We don't. 
+We create a new container from that image. 
+• Then we make changes to that container. 
+When we are satisfied with those changes, we transform them into a new 
+layer. 
+A new image is created by stacking the new layer on top Of the Old image. 
+ 
+
+Creating the first images 
+There is a special empty image called scratch. 
+• It allows to build from scratch. 
+The docker import command loads a tarball into Docker. 
+• The imported tarball becomes a standalone image. 
+• That new image has a single layer. 
+Note: you will probably never have to do this yourself. 
+ 
+
+Creating other images 
+docker commit 
+• Saves all the changes made to a container into a new layer. 
+• Creates a new image (effectively a copy Of the container). 
+docker build 
+Performs a repeatable build sequence. 
+• This is the preferred method! 
+We will explain both methods in a moment. 
+ 
+
+ docker build -f dockerfiles/Dockerfile.debug -t myapp_debug . 
+
+ docker build -f dockerfiles/Dockerfile.prod  -t myapp_prod . 
+
+ 
+
+DOCKER COMMANDS(SECTION2)
+
+
+
+
+Docker Image 
+Image 
+the actual package 
+PostgresSQL 
+configuration 
+Start script 
+artifact, that can be moved around 
+not running 
+Docker Container 
+actually start the application 
+container environment is created 
+running 
+ 
+
+ 
+
+What can I use Docker for? 
+
+Fast, consistent delivery of your applications 
+
+ 
+
+Docker architecture 
+
+Docker uses a client-server architecture. The Docker client talks to the Docker daemon, which does the heavy lifting of building, running, and distributing your Docker containers. The Docker client and daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon. The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface. Another Docker client is Docker Compose, that lets you work with applications consisting of a set of containers. 
+
+The Docker daemon 
+
+The Docker daemon (dockerd) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes. A daemon can also communicate with other daemons to manage Docker services. 
+
+The Docker client 
+
+The Docker client (docker) is the primary way that many Docker users interact with Docker. When you use commands such as docker run, the client sends these commands to dockerd, which carries them out. The docker command uses the Docker API. The Docker client can communicate with more than one daemon. 
+
+Docker registries 
+
+A Docker registry stores Docker images. Docker Hub is a public registry that anyone can use, and Docker is configured to look for images on Docker Hub by default. You can even run your own private registry. 
+
+When you use the docker pull or docker run commands, the required images are pulled from your configured registry. When you use the docker push command, your image is pushed to your configured registry. 
+
+Docker objects 
+
+When you use Docker, you are creating and using images, containers, networks, volumes, plugins, and other objects. This section is a brief overview of some of those objects. 
+
+Images 
+
+An image is a read-only template with instructions for creating a Docker container. Often, an image is based on another image, with some additional customization.  
+
+For example, you may build an image which is based on the ubuntu image, but installs the Apache web server and your application, as well as the configuration details needed to make your application run. 
+
+You might create your own images or you might only use those created by others and published in a registry. To build your own image, you create a Dockerfile with a simple syntax for defining the steps needed to create the image and run it. 
+
+ 
+
+ Each instruction in a Dockerfile creates a layer in the image. When you change the Dockerfile and rebuild the image, only those layers which have changed are rebuilt.  
+
+This is part of what makes images so lightweight, small, and fast, when compared to other virtualization technologies. 
+
+ 
+
+Containers 
+
+A container is a runnable instance of an image.  
+
+You can create, start, stop, move, or delete a container using the Docker API or CLI.  
+
+You can connect a container to one or more networks, attach storage to it, or even create a new image based on its current state. 
+
+ 
+
+By default, a container is relatively well isolated from other containers and its host machine.  
+
+You can control how isolated a container’s network, storage, or other underlying subsystems are from other containers or from the host machine. 
+
+A container is defined by its image as well as any configuration options you provide to it when you create or start it. When a container is removed, any changes to its state that are not stored in persistent storage disappear. 
+
+Example docker run command 
+
+The following command runs an ubuntu container, attaches interactively to your local command-line session, and runs /bin/bash. 
+
+$docker run -i-tubuntu /bin/bash 
+
+ 
+
+ 
+
+ 
+
+The underlying technology 
+
+Docker is written in the Go programming language and takes advantage of several features of the Linux kernel to deliver its functionality. Docker uses a technology called namespaces to provide the isolated workspace called the container.  
+
+ 
+
+ 
+
+What is an image? 
+An image is a collection of files + some meta data. 
+(Technically: those files form the root filesystem Of a container.) 
+Images are made Of layers, conceptually stacked on top Of each Other. 
+Each layer can add, change, and remove files. 
+Images can share layers to optimize disk usage, transfer times, and 
+memory use. 
+CO •ner 
+Image 
+references 
+parent 
+image 
+ 
+
+ 
+
+Differences between containers and images 
+An image is a read-only filesystem. 
+A container is an encapsulated set Of processes running in a read-write 
+copy Of that filesystem. 
+• To optimize container boot time, copy-on-write is used instead Of regular 
+copy. 
+docker run starts a container from a given image. 
+s give a couple Of metaphors to illustrate those concepts. 
+ 
+
+Image as stencils 
+Images are like templates or stencils that you can create containers from. 
+ 
+
+Object-oriented programming 
+Images are conceptually similar to classes. 
+Layers are conceptually similar to inheritance. 
+Containers are conceptually similar to instances. 
+ 
+
+If an image is read-only, how do we change it? 
+We don't. 
+We create a new container from that image. 
+• Then we make changes to that container. 
+When we are satisfied with those changes, we transform them into a new 
+layer. 
+A new image is created by stacking the new layer on top Of the Old image. 
+ 
+
+Creating the first images 
+There is a special empty image called scratch. 
+• It allows to build from scratch. 
+The docker import command loads a tarball into Docker. 
+• The imported tarball becomes a standalone image. 
+• That new image has a single layer. 
+Note: you will probably never have to do this yourself. 
+ 
+
+Creating other images 
+docker commit 
+• Saves all the changes made to a container into a new layer. 
+• Creates a new image (effectively a copy Of the container). 
+docker build 
+Performs a repeatable build sequence. 
+• This is the preferred method! 
+We will explain both methods in a moment. 
+ 
+
+ docker build -f dockerfiles/Dockerfile.debug -t myapp_debug . 
+
+ docker build -f dockerfiles/Dockerfile.prod  -t myapp_prod . 
+
+
+DOCKER COMMANDS(SECTION 2)
+
+systemctl start docker 
+
+systemctl status docker 
+
+Sudo -i // will run all command root 
+
+ 
+
+Docker ps -a  - To See all running and stop conatiner  
+
+docker container  ls -l - it will only list running continer  
+
+docker container ls -a - stoped and running container  
+
+ 
+
+Command  
+
+Ssage 
+
+ 
+
+ 
+
+ 
+
+docker container prune 
+
+Delete all stopped container  
+
+ 
+
+ 
+
+ 
+
+docker container ls -a -s 
+
+List all container (stop/running) with size  
+
+ 
+
+ 
+
+ 
+
+docker container rm 23510108d82b 
+
+ remove cobainer by id or name 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+docker images 
+
+To list images  
+
+ 
+
+ 
+
+ 
+
+docker run hello-world 
+
+To run container from image  
+
+ 
+
+ 
+
+ 
+
+$ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...] 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+docker run --name surekha hello-world  
+
+To run container from image with custome name to container  
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+docker run -it  --name my_ubuntu_co ubuntu bash 
+
+ 
+
+ with extra param 
+
+ 
+
+ 
+
+ 
+
+docker exec -it  container_id/container_name bash 
+
+docker exec -it CONTAINER_ID /bin/bash 
+
+ 
+
+If container already running and want to attached/go inside container  
+
+ 
+
+ 
+
+ 
+
+docker run -d -it  --name my_ubuntu ubuntu /bin/bash 
+
+It means that the command you initially provided to the container (/bin/bash) will be run in the background and the container will not stop immediately 
+
+ 
+
+ 
+
+ 
+
+docker run hello-world 
+
+To run container from image  
+
+ 
+
+ 
+
+ 
+
+ 
+
+Docker inspect  containerid 
+
+Inspect and get ip 
+
+ 
+
+Docker conatiner top id 
+
+Get running process 
+
+ 
+
+Docker conatiner stats 
+
+ to see all container consuming 
+
+ 
+
+Docker container run -d -p 3600:8080 --name testweb nging 
+
+ 
+
+Netstat -nltp - to see listing port  
+
+ 
+
+Docker container inspect id 
+
+ 
+
+ 
+
+Port forwarding 
+
+Docker c rename id newname 
+
+Rename container 
+
+ 
+
+Docker conatiner restart id 
+
+ 
+
+ 
+
+ 
+
+To access container with inital 3 id 
+
+ 
+
+ 
+
+Kill and stop 
+
+ abruptly Kill 
+
+ 
+
+Docker  container wait id 
+
+It will show exit status 
+
+ 
+
+Docker conatiner pause  
+
+ see on  
+
+ 
+
+Docker conatiner port id/nm 
+
+To see port mapping 
+
+ 
+
+Docker volumn ls 
+
+ 
+
+ 
+
+Dokcer run  -v  
+
+ 
+
+ 
+
+Docker volumn create --name=na 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Containers 
+
+Use docker container my_command 
+
+create — Create a container from an image. 
+
+start — Start an existing container. 
+
+run — Create a new container and start it. 
+
+ls — List running containers. 
+
+inspect — See lots of info about a container. 
+
+logs — Print logs. 
+
+stop — Gracefully stop running container. 
+
+kill —Stop main process in container abruptly. 
+
+rm— Delete a stopped container. 
+
+ 
+
+docker container run –d –-name surekha-self --rm node:latest 
+
+ 
+
+Images 
+
+Use docker image my_command 
+
+build — Build an image. 
+
+push — Push an image to a remote registry. 
+
+ls — List images. 
+
+history — See intermediate image info. 
+
+inspect — See lots of info about an image, including the layers. 
+
+rm — Delete an image 
+
+ 
+
+Misc 
+
+ 
+
+docker info - no of list con,img etc  
+
+ 
+
+docker version — List info about your Docker Client and Server versions. 
+
+docker login — Log in to a Docker registry. 
+
+ — Delete all unused containers, unused networks, and dangling images. 
+
+ 
+
+Command combination  
+
+ 
+
+docker run -d httpd -name test 
+
+ 
+
+In order to launch this Docker container in the background, I included the -d (detach) flag. 
+
+ 
+
+ docker container ls --all 
+
+ 
+
+ remove all containers 
+
+ 
+
+ docker rm -f $(docker ps -a -q)  
+
+ 
+
+ 
+
+docker ps 
+
+ 
+
+docker ps -a 
+
+ 
+
+docker rm test 
+
+ 
+
+docker container run -i -t -p 1000:8000 --rm my_image 
+
+ 
+
+ 
+
+You need to specify both -i and -t to then interact with the container through your terminal shell. 
+
+ 
+
+ 
+
+The port is the interface with the outside world.1000:8000 maps the Docker port 8000 to port 1000 on your machine.  
+
+ 
+
+If you had an app that output something to the browser you could then navigate your browser to localhost:1000 and see it. 
+
+ 
+
+ 
+
+docker container run -d my_image 
+
+ 
+
+winpty docker run -it ubuntu 
+
+ 
+
+ 
+
+ 
+
+Terminology 
+
+In the last section, we used a lot of Docker-specific jargon which might be confusing to some. So before we go further, let me clarify some terminology that is used frequently in the Docker ecosystem. 
+
+Images - The blueprints of our application which form the basis of containers. In the demo above, we used the docker pull command to download the busybox image. 
+
+Containers - Created from Docker images and run the actual application. We create a container using docker run which we did using the busybox image that we downloaded. A list of running containers can be seen using the docker ps command. 
+
+Docker Daemon - The background service running on the host that manages building, running and distributing Docker containers. The daemon is the process that runs in the operating system which clients talk to. 
+
+Docker Client - The command line tool that allows the user to interact with the daemon. More generally, there can be other forms of clients too - 
+
+Docker Hub - A registry of Docker images. You can think of the registry as a directory of all available Docker images. If required, one can host their own Docker registries and can use them for pulling images. 
+
+ 
+
+ DOCKER LAB(SECTION 3}
+
+Setup a Simple Apache Web Server in a Docker Container 
+
+ 
+
+systemctl start docker 
+
+ 
+
+systemctl status docker 
+
+ 
+
+sudo docker run -dit --name demo-web -p 8080:80 -v /home/user/website/:/usr/local/apache2/htdocs/ httpd:2.4 
+
+ 
+
+We will use an image called httpd:2.4 from Docker Hub. 
+
+requests made to our public IP address on port 8080 be redirected to port 80 on the container. 
+
+serving content from the container itself, we will serve a simple web page from /home/user/website. 
+
+mapping /home/user/website/ on the /usr/local/apache2/htdocs/ on the container. Note that you will need to use sudo or log in as root to proceed 
+
+ 
+
+ sudo docker ps 
+
+  
+
+ create simple page  
+
+  
+
+ vi /home/user/website/docker.html 
+
+  
+
+ publicip:8080/docker.html  
+
+  
+
+ sudo docker stop demo-web 
+
+ sudo docker rm demo-web 
+
+  
+
+ sudo docker image remove httpd:2.4 
+
+ 
+
+ 
+
+ 
+
+ 
+
+------ 
+
+How to Build a Docker Image and Docker Container Using Dockerfile? 
+
+First of all, you should create a directory in order to store all the Docker images you build. 
+
+ 
+
+mkdir demo_docker 
+
+ 
+
+cd demo_docker  
+
+touch Dockerfile 
+
+ 
+
+Open the file with the editor. In this example, we opened the file using vi: 
+
+vi Dockerfile 
+
+ 
+
+Then, add the following content: 
+
+FROM ubuntu 
+
+MAINTAINER simpli 
+
+RUN apt-get update 
+
+CMD ["echo", "Welcome to Docker demo"] 
+
+ 
+
+5.Save and exit the file. 
+
+ 
+
+Now, let’s build a basic image using a Dockerfile:  
+
+ 
+
+docker build [location of your dockerfile] 
+
+ 
+
+Now, by adding -t flag, the new image can be tagged with a name: 
+
+ 
+
+docker build -t welcome_image 
+
+ 
+
+Please start docker demon before build image  
+
+ 
+
+DELL@DESKTOP-AARVGFN MINGW64 ~/Desktop/docker-demo 
+
+$ docker build  . -t welcom_image 
+
+#1 [internal] load build definition 
+
+ 
+
+ 
+
+Verify image 
+
+ 
+
+docker images 
+
+ 
+
+Create a New Container 
+
+ 
+
+docker run --name mydemocont welcome_image 
+
+ 
+
+DELL@DESKTOP-AARVGFN MINGW64 ~/Desktop/docker-demo 
+
+$ docker run --name mydemocont welcom_image 
+
+Welcome to Docker demo 
+
+ 
+
+ 
+
+ DOCKER LAB FOR JAVA(SECTION 4)
+
+
+https://start.spring.io/ 
+
+ 
+
+Install docker on aws machine  
+
+Connect from console on rfom ssh client by key  
+
+ 
+
+Sudo -i - change root user 
+
+ 
+
+Apt-get udpate 
+
+Apt install docker.io 
+
+ 
+
+Build using mvn 
+
+ 
+
+FROM openjdk:11 
+
+LABEL maintainer="THBS" 
+
+ADD target/spintgbook.jar spinboot.jar 
+
+ENTRYPOINT ["java", "-jar", "sprintboot.jar"] 
+
+ 
+
+Docker build -t sprintbook-docker-demo:latest . 
+
+ 
+
+ 
+
+Docker images 
+
+Docker run -p 8081:8080  image-name  
+
+
+DOCKER HUB IMAGE PUSH
+
+Dockerfile with set of instructions 
+
+Docker build -t ran_abc . 
+
+ 
+
+Push image to repo / hub 
+
+ 
+
+Docker hub account  
+
+Create repo  
+
+Docker login 
+
+docker build -t sshelake25/htbs:my_ansible_repo . 
+
+Docker images  
+
+docker push sshelake25/htbs:my_ansible_repo  
+
+
+
+CREATE REACT APPP AND IMAGE OUT OF IT
+
+Create react app with CLI -  
+
+  create-react-app demo 
+
+Add root of project add dockerfile 
+
+ Filename - Dockerfile 
+
+ 
+
+Add commands / steps to form docker image out of react project / refer file 
+
+       https://github.com/sshelake25/docker-lab/blob/main/Dockerfile 
+
+ 
+
+Make sure you have user account on hub.docker.com 
+
+ 
+
+On you local machine login to docker in order to push tagged image 
+
+ 
+
+Docker login 
+
+add your usename and password  
+
+ 
+
+Tag image as per your docker registory or repo name        
+
+docker build -t sshelake25/demo-lab:react-app-demo . 
+
+Note: In above command, sshelake25/domo-lab is my regstory name: react-app-demo is image name. 
+
+Change as per your username and repo details, above command build able to generate docker image out of our Dockerfile we have added at root of react app. 
+
+Create / run conatiner out of image created above  
+
+docker run -d -it -p 3200:80/tcp --name react-app sshelake25/react-app:latest 
+
+If you want to share this image with other plp, push to hub repo and  
+
+
+REACT APP DOCKERISE
+
+https://github.com/sshelake25/docker-lab 
+
+ 
+
+A Docker File is a simple text file with instructions on how to build your images. 
+
+ 
+
+dockerfile workflow
+ 
+
+FROM – Defines the base image to use and start the build process. 
+
+ 
+
+RUN – It takes the command and its arguments to run it from the image. 
+
+ 
+
+CMD – Similar function as a RUN command, but it gets executed only after the container is instantiated. 
+
+ 
+
+ENTRYPOINT – It targets your default application in the image when the container is created. 
+
+ 
+
+ADD – It copies the files from source to destination (inside the container). 
+
+ 
+
+ENV – Sets environment variables. 
+
+docker build -tsample:dev . 
+
+ 
+
+ 
+
+ 
+
+  
+
+ 
+
+docker run \ 
+
+-it\ 
+
+--rm\ 
+
+-v ${PWD}:/app \ 
+
+-v /app/node_modules \ 
+
+-p 3001:3000 \ 
+
+-e CHOKIDAR_USEPOLLING=true\ 
+
+sample:dev 
+
+
+CREATE CON/INSTALL DOCKER LINUX
+
+
+Spin linux vm 
+
+Centos -  
+
+Sudo su // will take to root user 
+
+https://docs.docker.com/engine/install/centos/ 
+
+Once docker installed  
+
+To login 
+
+Docker login 
+
+Give your docker urname and password 
+
+Docker pull ubuntu 
+
+Create container 
+
+Docker container run ubntu 
+
+ 
+
+Docker container ls // runing cont 
+
+Docker conatiner ls -a // all 
+
+Docker conatiner rm contid 
+
+Docker --version 
+
+ 
+
+Docker conatiner run -it ubuntu /bin/bash - take conatiner shell 
+
+App-get update 
+
+Apt-get install apache2 
+
+Yes 
+
+ 
+
+Cd /var/www/html - load website 
+
+ 
+
+Echo "wlcome to first cont" > index.html 
+
+ 
+
+Service apache2 start 
+
+ 
+
+Login with another putty instace 
+
+ 
+
+Docker conatiner inspect cont id 
+
+ 
+
+Ipadress - take and hit in browsser  
+
+ 
+
+Docker conatiner stats cont id 
+
+
+ 
+DOCKER NETWORKING
+
+
+How do containers communicate? 
+
+First, a quick overview! Although containers have a level of isolation from the environment around them, they often need to communicate with each other, and the outside world. 
+
+ 
+
+Two containers communicating using networking and file sharing
+Networking or file sharing? 
+
+Two containers can talk to each other in one of two ways, usually: 
+
+Communicating through networking: Containers are designed to be isolated. But they can send and receive requests to other applications, using networking. 
+For example: a web server container might expose a port, so that it can receive requests on port 80. Or an application container might make a connection to a database container. 
+
+Sharing files on disk: Some applications communicate by reading and writing files. These kinds of applications can communicate by writing their files into a volume, which can also be shared with other containers. 
+For example: a data processing application might write a file to a shared volume which contains customer data, which is then read by another application. Or, two identical containers might even share the same files. 
+
+File sharing is great, but…. for this article, we’ll look at applications that use networking as the primary way they either expose or consume services. 
+
+We’ll talk about how to set up a network, which allows Docker containers on the same host to communicate with other. 
+
+Let’s look at how you can use networking to connect containers together! 
+
+Communication between containers with networking 
+
+Most container-based applications talk to each other using networking. This basically means that an application running in one container will create a network connection to a port on another container. 
+
+For example, an application might call a REST or GraphQL API, or open a connection to a database. 
+
+Containers are ideal for applications or processes which expose some sort of network service. The most well-known examples of these kinds of applications are: 
+
+Web servers - e.g. Nginx, Apache 
+
+Backend applications and APIs - e.g. Node, Python, JBoss, Wildfly, Spring Boot 
+
+Databases and data stores - e.g. MongoDB, PostgreSQL 
+
+There are more examples, but these are probably the most common ones! 
+
+With Docker, container-to-container communication is usually done using a virtual network. 
+
+Building your (Virtual) Network 
+
+If you are running more than one container, you can let your containers communicate with each other by attaching them to the same network. 
+
+A Docker network lets your containers communicate with each other 
+
+Docker creates virtual networks which let your containers talk to each other. In a network, a container has an IP address, and optionally a hostname. 
+
+You can create different types of networks depending on what you would like to do. We’ll cover the easiest options: 
+
+The default bridge network, which allows simple container-to-container communication by IP address, and is created by default. 
+
+A user-defined bridge network, which you create yourself, and allows your containers to communicate with each other, by using their container name as a hostname. 
+
+Default bridge network (easiest option) 
+
+The simplest network in Docker is the bridge network. It’s also Docker’s default networking driver. 
+
+Two people sharing a parcel across a bridge
+A bridge network allows containers to communicate with each other 
+
+Source: 
+
+ 
+
+A bridge network gives you simple communication between containers on the same host. 
+
+When Docker starts up, it will create a default network called… bridge. 🤔 It should start automatically, without any configuration required by you. 
+
+From that point onwards, all containers are added into to the bridge network, unless you say otherwise. 
+
+In a bridge network, each container is assigned its own IP address. So containers can communicate with each other by IP. 
+
+So let’s see an example of using the default bridge network. 
+
+How to use the default bridge network 
+
+Here’s how to use the bridge network to get two Docker containers on the same host to talk to each other: 
+
+Check that the bridge network is running: You can check it’s running by typing docker network ls. This should show the bridge network in the list. 
+$ docker network ls 
+NETWORK ID     NAME      DRIVER    SCOPE 
+acce5c7fd02b   bridge    bridge    local 
+a6998b3cf420   host      host      local 
+d7f563b21fc6   none      null      local 
+ 
+
+Start your containers: Start your containers as normal, with docker run. When you start each container, Docker will add it to the bridge network. 
+(If you prefer, you can be explicit about the network connection by adding --net=bridge to the docker run command.) 
+
+ 
+
+Address another container by its IP address: Now one container can talk to another, by using its IP address. 
+You’l need to know the IP address of the container - check the little box below to find out how. 
+
+How do you find out the IP address of a Docker container? 
+
+Example 
+
+Here’s a complete example. I’ll start an nginx container. Then I’ll start a busybox container alongside nginx, and try to make a request to Nginx with wget: 
+
+ 
+
+# Start an nginx container, give it the name 'mynginx' and run in the background$ docker run --rm--namemynginx --detachnginx 
+ 
+
+ 
+
+# Get the IP address of the container$ docker inspect mynginx | grep IPAddress 
+            "IPAddress": "172.17.0.2", 
+ 
+
+ 
+
+ 
+
+# Fetch the nginx homepage by using the container's IP addressbusybox$ wget -q-O- 172.17.0.2:80 
+<!DOCTYPE html> 
+<html> 
+<head><title>Welcome to nginx!</title> 
+<style> 
+ 
+
+# Voila! The nginx homepage! 
+
+How to check if a container is in the bridge network 
+
+The default bridge is….. fine…. but it means every container can see every other container. 
+
+ 
+
+What you probably want is: a user-defined network, so that you can be more granular about which containers can see each other. 
+
+Let’s look at that option. 
+
+ 
+
+User-defined bridge: the more sensible option 
+
+If you only use the default bridge network, then all your containers can see and access other containers’ ports. This isn’t always what you want! 
+
+ 
+
+ 
+
+The second option, the user-defined bridge, lets you have a bit more control. 
+
+ 
+
+Get more control, with a user-defined bridge 
+
+To let Docker containers communicate with each other by name, you can create a user-defined bridge network. I 
+
+n a user-defined bridge network, you can be more explicit about who joins the network, and you get an added bonus: 
+
+ 
+
+…containers can be addressed by their name or alias. 
+
+User-defined bridge network
+In a user-defined bridge network, you control which containers are in the network, and they can address each other by hostname 
+
+ 
+ 
+
+Create a user-defined bridge network: Create your own custom bridge network first using docker network create. Under the hood, Docker sets up the relevant networking tables on your operating system. 
+For example, I’m going to create a network called tulip-net for applications about tulips: 🥀 
+docker network create tulip-net 
+ 
+
+Start a container and connect it to the bridge: Start your container as normal. Add it to your user-defined bridge network using the --net option, e.g. --net tulip-net. 
+docker run --rm --net tulip-net --name tulipnginx -d nginx  
+ 
+
+ 
+
+Address another container, using its name as the hostname: When two containers are joined to the same user-defined bridge network, one container is able to address another by using its name (as the hostname). 
+# Start a busybox container so that we can test out the network$ docker run --nettulip-net -itbusybox sh 
+ 
+# Use 'wget' inside busybox, using the container name as the hostname!busybox$ wget -q-O- tulipnginx:80 
+<!DOCTYPE html> 
+<html> 
+<head><title>Welcome to nginx!</title> 
+...you get the picture.... 
+ 
+
+Can you connect an existing container to a network? 
+
+And that’s user-defined bridge networking. It’s a great way to have a custom network set up, and isolation from other containers that aren’t in the network. 
+
+TL;DR 
+
+Too long, didn’t read? Here’s the gist: 
+
+For containers to communicate with other, they need to be part of the same “network”. 
+
+Docker creates a virtual network called bridge by default, and connects your containers to it. 
+
+In the network, containers are assigned an IP address, which they can use to address each other. 
+
+If you want more control (and you definitely do), you can create a user-defined bridge, which will give you the added benefit of hostnames for your containers too.  
+ 
+
+
+DOCKER NETWORKIN EXAMPLE
+
+
+Networking using the host network 
+
+Estimated reading time: 2 minutes 
+
+This series of tutorials deals with networking standalone containers which bind directly to the Docker host’s network, with no network isolation. For other networking topics, see the overview. 
+
+Goal 
+
+The goal of this tutorial is to start a nginx container which binds directly to port 80 on the Docker host. From a networking point of view, this is the same level of isolation as if the nginx process were running directly on the Docker host and not in a container. However, in all other ways, such as storage, process namespace, and user namespace, the nginx process is isolated from the host. 
+
+Prerequisites 
+
+This procedure requires port 80 to be available on the Docker host. To make Nginx listen on a different port, see the documentation for the nginx image 
+
+The host networking driver only works on Linux hosts, and is not supported on Docker Desktop for Mac, Docker Desktop for Windows, or Docker EE for Windows Server. 
+
+Procedure 
+
+Create and start the container as a detached process. The --rm option means to remove the container once it exits/stops. The -d flag means to start the container detached (in the background). 
+$docker run --rm-d--networkhost --namemy_nginx nginx 
+ 
+
+Access Nginx by browsing to http://localhost:80/. 
+
+Examine your network stack using the following commands: 
+
+Examine all network interfaces and verify that a new one was not created. 
+$ip addr show 
+ 
+
+Verify which process is bound to port 80, using the netstat command. You need to use sudo because the process is owned by the Docker daemon user and you otherwise won’t be able to see its name or PID. 
+$sudo netstat -tulpn| grep:80 
+ 
+
+Stop the container. It will be removed automatically as it was started using the --rm option. 
+docker container stop my_nginx 
+
+https://docs.docker.com/network/network-tutorial-standalone/ 
+
+ 
+DOCKER VOLUMES
+
+
+Before going deep into volumes, Let’s understand how containers persist data in the host filesystem. 
+
+Running 
+container 
+Storage 
+driver 
+Writable layer 
+Host file system 
+If we look at the above diagram, whenever running container wants to persist data, it actually put that data into the writable layer through storage driver. well, we have some problems with that!!! 
+
+What are the problems 
+
+Data is no longer persisted and difficult to access if container stops as shown in the following diagram 
+
+As we can see writable layer is tightly coupled with host filesystem and difficult to move the data. 
+
+We have an extra layer of abstraction with a storage driver which reduces the performance. 
+
+Running 
+container 
+Storage 
+driver 
+stopped 
+conatiner 
+No access to data 
+Writable layer 
+Host file system 
+Host 
+Let’s see in action 
+
+Let’s pull the latest nginx image from the docker hub and run the container and load the home page which listens on port 80. 
+
+// pull the nginx image 
+
+docker pull nginx// run the container 
+
+docker run -it --name=webApp -d -p 80:80 nginx 
+
+
+ 
+
+e b hargavba 
+80 
+Dullin 
+eb2aec2b9c„, 
+docker run 
+docker container 
+
+
+ 
+
+Welcome to nginx! 
+If you see this page, the nginx web server is successfully installed and 
+working. Further configuration is required. 
+For online documentation and support please refer to nginx,org. 
+Commercial support is available at nginxcqm. 
+Thank you for using nginx. 
+localhost:80 
+
+Let’s use the docker exec command to edit the welcome page and load it. 
+
+// list the running containers 
+
+docker ps// exec command 
+
+docker exec -it webApp bash// cd to welcome page and edit it 
+
+cd /usr/share/nginx/html 
+
+echo "I changed this file while running the conatiner" > index.html 
+
+
+ 
+
+
+ 
+
+
+ 
+
+C @ localhost 
+I changed this file while running the conatiner 
+localhost:80 
+
+Let’s stop the container and start it again. we can still see the changes that we made. what if we stop this container and start another one and load the page. There is no way that we could access the file that we have changed in another container. 
+
+
+ 
+
+Welcome to nginx! 
+at 
+localhost:80 
+
+
+ 
+
+
+docker run command 
+
+How Volumes can solve above issues 
+
+Volumes are saved in the host filesystem (/var/lib/docker/volumes/) which is owned and maintained by docker.  
+
+Any other nondocker process can’t access it. But, As depicted in the below other docker processes/containers can still access the data even container is stopped since it is isolated from the container file system. 
+
+
+ 
+
+Running 
+container 
+Volumes 
+stopped 
+conatiner 
+still have access to data 
+Host file system 
+How to create a Volume 
+
+We can create a volume with the below command or while container/service creation  
+
+ it is created in the directory of the docker host and When you mount the volume into a container, this directory is what is mounted into the container 
+
+ 
+
+. we should notice the difference between creation and mounting. 
+
+ 
+
+docker volume create <volumeName> 
+
+ 
+
+How to remove a Volume 
+
+ 
+
+docker volume prune 
+
+ 
+
+Let’s put Theory into practice 
+
+Let’s run these commands and see how it works!!. we can see the location of volumes in the docker area of the host file system with the inspect command. 
+
+// create a volume 
+
+docker volume create new_vol// list volumes 
+
+docker volume ls// inspect volumes 
+
+docker volume inspect new_vol// removing volumes 
+
+docker volume rm new_vol 
+
+
+ 
+
+tedAt• 
+B89b2B62 」 a 」 6 」 」 ! B : f7b6a920 
+bhargavbachånaS decke 
+acb ~ 0 c : 70 t7b 10 
+docker volumes 
+
+login into docker VM and check the filesystem and volumes location. We can see docker volumes location in the below image. 
+
+screen $HOME/Library/Containers/com.docker.docker/Data/vms/0/tty 
+
+
+ 
+
+
+Let’s see the same example with volumes 
+
+Let’s run the nginx container with the below command. we are starting nginx container with the welcome page mounted to volume new_vol that we created above and exposing the port 80. 
+
+Once we run this command and ssh into docker volumes, we can see that volume prepopulated with default welcome page from nginx location /usr/share/nginx/html 
+
+docker run -d --name=webApp1 --mount source=new_vol,destination=/usr/share/nginx/html -p 80:80 nginx 
+
+
+ 
+
+
+welcome page localhost:80 
+
+Let’s go and change the index.html from the new_vol location by ssh into the docker. 
+
+
+ 
+
+etadata.db 
+linuxkit 
+-e2seeeeaøee1. 
+Iinuxkit 
+-e25eeeeeøee1 
+linuxkit 
+-easeeeeeaeet 
+Iinuxkit 
+-easeeeeeøeel 
+I inuxkit-easeeeeaaeet; 
+tile i th 
+-e25eeeeeeee1 
+Changing 
+cd 
+cd _data/ 
+/ varnih/d 
+index. html 
+linuxkit 
+linuxkit 
+linuxkit 
+-easeeeeeøeel 
+the in the v 
+*Changing the 
+cat index 
+6 
+editing the file in the volume 
+
+
+ 
+
+0W200 一 ○ 0 
+OUJnIOA u! Olg 010 
+Let’s stop this container and start another one with the same command 
+
+docker stop webApp1docker run -d --name=webApp2 --mount source=new_vol,destination=/usr/share/nginx/html -p 80:80 nginx 
+
+we can load the page again localhost:80 and still see the html file that we edited in the volume. 
+
+So, with the help of volumes, we can easily access the data even we stop the container and it’s very easy to access data and import the data to anywhere. 
+
+Don’t forget to remove volumes 
+
+if you stop the container and remove it, you should remove volume new_vol manually. stopping or removing the containers doesn’t delete the volumes. 
+
+Conclusion 
+
+Volumes can be more safely shared among multiple containers. We can prepopulate the volume with the run command and we can even backup, restore and remove volumes. 
+ 
+
+Host 
+bind 
+mount 
+Filesystem 
+I Docker area 
+@ Container 
+tmpfs 
+mount 
+volume 
+Memory 
+Volumes are stored in a part of the host filesystem which is managed by Docker( /var/lib/docker/volumes/ on 
+Linux). Non-Docker processes should not modify this part of the filesystem. Volumes are the best way to persist 
+data in Docker. 
+Bind mounts may be stored anywhere on the host system. They may even be important system files or 
+directories. Non-Docker processes on the Docker host or a Docker container can modify them at any time. 
+tmpfs mounts are stored in the host system's memory only, and are never written to the host system's 
+filesystem. 
+ 
+
+ 
+
+docker volume create my-vol 
+
+docker volume ls 
+
+docker volume inspect my-vol 
+
+docker volume rm my-vol 
+
+ 
+
+/Var/lib/ 
+
+ 
+
+Inspect image  
+
+ 
+
+ 
+
+ 
+
+docker run -d \ 
+
+  --name devtest \ 
+
+  -v myvol2:/app \ 
+
+  nginx:latest 
+
+ 
+
+ 
+
+Docker conatiner run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql 
+
+ 
+
+ 
+
+Mysql 
+
+ 
+
+Show databases 
+
+ 
+
+Create database hello 
+
+Create database person 
+
+ 
+
+Docker container rm -f id  
+
+ 
+
+ 
+
+Docker image inspect image  
+
+Docker volume inspect idv 
+
+ 
+
+Host Machin has volumes  
+
+ 
+
+ 
+
+ 
+
+ 
+
+Use a volume with docker-compose 
+
+A single docker compose service with a volume looks like this: 
+
+ 
+
+version: "3.9" 
+
+services: 
+
+  frontend: 
+
+    image: node:lts 
+
+    volumes: 
+
+      - myapp:/home/node/app 
+
+volumes: 
+
+  myapp: 
+
+On the first invocation of docker-compose up the volume will be created. The same volume will be reused on following invocations. 
+
+ 
+DOCKER COMPOSE
+
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application’s services. 
+
+ 
+
+ Then, with a single command, you create and start all the services from your configuration. 
+
+ 
+
+ 
+
+ 
+
+Using Compose is basically a three-step process: 
+
+Define your app’s environment with a Dockerfile so it can be reproduced anywhere. 
+
+Define the services that make up your app in docker-compose.yml so they can be run together in an isolated environment. 
+
+Run docker compose up and the Docker compose command starts and runs your entire app. You can alternatively run docker-compose up using the docker-compose binary. 
+
+A docker-compose.yml looks like this: 
+
+ 
+
+Compose overview 
+This is how you work with Compose: 
+• You describe a set (or stack) of containers in a YAML file called docke r- 
+compose. ymt. 
+• You run docker-compose up. 
+Compose automatically pulls images, builds containers, and starts them. 
+Compose can set up links, volumes, and other Docker options for you. 
+Compose can run the containers in the background, or in the foreground. 
+When containers are running in the foreground, their aggregated output is 
+shown. 
+ 
+
+sudo apt install docker-compose 
+
+ 
+
+Docker conatiner run -it  
+
+ 
+
+Docker-compose file  
+
+ 
+
+Version: '3' 
+
+Services: 
+
+  webapp1: 
+
+    Image :nginx 
+
+    ports: 
+
+      - "8000: 08" 
+
+ 
+
+  webapp2: 
+
+    Image :nginx 
+
+    ports: 
+
+      - "8001: 08" 
+
+ 
+
+Docker componse up -f 
+
+Docker compose down  
+
+ 
+
+https://github.com/docker/awesome-compose 
+
+ 
+
+DOCKER MORE REF
+
+ 
+
+Communication between containers with networking 
+
+ 
+
+For containers to communicate with other, they need to be part of the same “network”. 
+
+Docker creates a virtual network called bridge by default, and connects your containers to it. 
+
+In the network, containers are assigned an IP address, which they can use to address each other. 
+
+If you want more control (and you definitely do), you can create a user-defined bridge, which will give you the added benefit of hostnames for your containers too. 
+
+Happy networking! 
+
+ 
+
+ 
+
+How docker run on windows able to run linux  
+
+ 
+
+One of the most important enhancements is that Docker can now run Linux containers on Windows (LCOW), using Hyper-V technology. 
+
+Running Docker Linux containers on Windows requires a minimal Linux kernel and userland to host the container processes. This is exactly what the LinuxKit toolkit was designed for: creating secure, lean and portable Linux subsystems that can provide Linux container functionality as a component of a container platform. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+   
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+
+ 
+
+  
+
+ 
+
+
+  
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ 

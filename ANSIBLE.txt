@@ -1,0 +1,1597 @@
+ 
+
+ 
+
+What is Ansible? 
+Tool to automate IT tasks. 
+What IT tasks? 
+Why it's good to automate them? 
+ 
+
+Why use Ansible? 
+my-app v 
+my-app v 
+my-app v 21 
+my-app v 2.0 
+update Docker version 
+my-app v 
+ 
+
+Why use Ansible? 
+my-app v 2.0 
+my-app v 2.0 
+my-app v 2.0 
+my-app v 2.0 
+my-app v 2.0 
+ 
+
+Updates 
+Why use Ansible? 
+Back Ups 
+Repetitive Tasks 
+Create User 
+Assign Groups 
+System Reboots 
+ 
+
+Why use Ansible? 
+SSH 
+ 
+
+ 
+
+more efficient 
+Why use Ansible? 
+ANSI BLE 
+less time consuming 
+ 
+
+In 4 different ways 
+Execute tasks from your own machine 
+Configuration/lnstallation/Deployment steps in a single 
+File 
+same file multiple times and for different environments 
+More reliable and less likely for errors 
+ 
+
+Supporting all infrastructure 
+From operating systems.. 
+. .to Cloud Provider 
+ 
+
+ 
+
+SSH 
+Ansible is agenttess 
+Control Machine 
+ 
+
+
+ 
+
+ 
+
+ 
+
+Ansible is agentless 
+Manages servers remotely 
+ 
+
+Ansible is agentless 
+No deploymentt effort in beginning 
+No upgrade effort 
+ 
+
+What is Ansible? 
+When is Ansible used? 
+But, how does Ansible work? 
+ 
+
+Ansible Architecture 
+Modules 
+ 
+
+Modules 
+= Small programs that do the actual work. 
+ 
+
+Modules 
+Get pushed to the target server. 
+Do their work and get removed. 
+ 
+
+Modules 
+= one small specific task 
+ 
+
+Create Cloud 
+Instance 
+Module 
+Start Nginx 
+Modules 
+= one small specific task 
+Install Nginx 
+Server 
+Nart Docker 
+Container 
+Create or 
+copy file 
+ 
+
+ 
+
+Crede Cloud 
+Module 
+Start tWnx 
+Modules 
+one small specific task 
+Instau Nginx 
+Module Inaex 
+• All rtuiules 
+• Clustering 
+• Crypto N)dules 
+• Database 
+• Files 
+rxxlules 
+Monitoring modules 
+Net Tails rrm.Jks 
+• Network ryufules 
+Notification rrm.Jles 
+Rertwte Manageawnt 
+• Source Cmtrol modules 
+• Storage :v.odulcs 
+ 
+
+Module 
+Modules 
+= one small specific task 
+List of modules in Ansible Official Documentation: 
+Module Index 
+• All 
+• Cloud «xfules 
+• Clustering rt%xiules 
+• Comrnands 'nodules 
+• Crypto 
+Database rn«iules 
+• Files rn«iules 
+• Identity mcxiules 
+• Inventory modules 
+Messaging 
+Monitorirw rncxiules 
+• Net Tools rnodules 
+• Network rru)dules 
+• Notification rnodules 
+• RerTK)te Management rnodules 
+• Control 
+ 
+
+Ansible uses YAML 
+no need for learning a specific language for Ansible 
+Example Module Usages 
+ 
+
+Jenkins Module 
+jenkins_job 
+Creating a job 
+Delete a job 
+g Create a jenkins job using basic authentication 
+- jenkins_job: 
+config: lookup( 'file', 
+'templates/test.xmt') Y}" 
+name: test 
+password: admin 
+url: http: //tocalhost:8Ø8Ø 
+user: admin 
+g Delete a jenkins job using the token 
+— jenkins_job: 
+name: test 
+token: asdfasfasfasdfasdfadfasfasdfasdfc 
+state: absent 
+url: http://IocaIhost:8Ø8Ø 
+ 
+
+Docker Module 
+Create container: 
+docker_container 
+Start container: 
+Apply configuration: 
+- name; Create a data container 
+docker_container: 
+name: mydata 
+image: busybox 
+volumes: 
+- 'data 
+— name: Start a container with a co—and 
+docker_container: 
+name: sleepy 
+image: ubuntu: 14.ø4 
+conmand: ["sleep", 
+- name: Add container to networks 
+docker_container: 
+name: sleepy 
+networks: 
+— name: Testin*et 
+ipva_address: 172.1.1.18 
+links: 
+— steeper 
+— name: Test 
+ 
+
+Postgres Module 
+Create table: 
+Set user privilege: 
+postgresql_table 
+— name: Rename table foo to bar 
+postgresq L_table: 
+table: foo 
+rename: bar 
+— name: Set owner to someuser 
+postgresq l_table: 
+name: foo 
+owner: someuser 
+— name: Truncate table foo 
+postgresq l_table: 
+name: foo 
+truncate: yes 
+ 
+
+Modules are granular and specific 
+So, how to handle complex applications? 
+A 
+moå'l• B 
+ 
+
+Modules are granular and specific 
+- multiple modules 
+- in a certain sequence 
+- grouped together 
+ 
+
+Ansible Playbooks 
+tasks: 
+I — name: Rename table foo to bar 
+postgresql_table: 
+table: foo 
+rename: bar 
+— name: Set owner to someuser 
+postgresql_table: 
+name: foo 
+owner: someuser 
+— name: Truncate table foo 
+postgresql_table: 
+name: foo 
+truncate: yes 
+1 Task - 
+— action to be performed 
+tasks 
+ 
+
+Ansible Playbooks 
+tasKs: 
+— name: Renaæ table foo to bar 
+postg resql_table: 
+table: foo 
+rename: bar 
+— name: Set owner to soæuser 
+postg resql_table: 
+name: foo 
+owner: someuser 
+— name: Truncate table foo 
+postgresql_table: 
+name: foo 
+truncate: yes 
+Modlie nne 
+Argunene 
+ 
+
+Ansible Playbooks 
+t dSKs: 
+— name: Rename table foo to bar 
+postgresq le: 
+table: foo 
+rename: bar 
+— name: Set owner to soreuser 
+postgresq l_table: 
+name: foo 
+owner: someuser 
+— name: Truncate table foo 
+postgresql_taöle: 
+name: foo 
+truncate: yes 
+Module name 
+Arguments 
+Description of task 
+ 
+
+Ansible Playbooks 
+tasss: 
+— name: Rename table foo to bar 
+postgresql_table: 
+table: foo 
+rename: bar 
+— name: Set owner to someuser 
+postgresql_table: 
+name: foo 
+owner: someuser 
+— name: Truncate table foo 
+postgresql_table: 
+name: foo 
+truncate: yes 
+Rename table 
+Set Owner 
+Truncate table 
+ 
+
+Ansible Playbooks 
+Execute multiple modules in a sequence: 
+tasks: 
+— name: create directory for nginx 
+file: 
+r patk: /path/to/nginx/dir 
+Istate: directory 
+— name: install nginx latest version 
+yum: 
+narc: nginx 
+state: latest 
+— nane: start nginx 
+service: 
+name: nginx 
+Modile nune 
+Argumenb 
+1 configuraion 
+ 
+
+Ansible Playbooks 
+Execute multiple modules in a sequence: 
+tasks: 
+— name: create directory for nginx 
+file: 
+path: /path/to/nginx/dir 
+state: directory 
+— name: install nginx latest version 
+yum: 
+name: nginx 
+state: latest 
+— name: start nginx 
+ser v Ice: 
+name: nginx 
+Module name 
+Arguments 
+Where should these tasks execute? 
+ 
+
+Ansible Playbooks 
+,-IOSZS: 
+tasks 
+data Oases 
+root 
+— name: Rena— table foo to bar 
+pos tg re sq I _ table: 
+table; foo 
+rename: bar 
+— name: Set wner to so—user 
+pos tg re sq I_tab 
+name: foo 
+owner: SEeuser 
+— name: Truncate table foo 
+postg 
+Where should these tasks execute? 
+HOSTS 
+With which user should the tasks execute? 
+REMOTE USER 
+Strict indentation! 
+ 
+
+Ansible Playbooks 
+Use variables for repeating values 
+remote_user: root 
+tasks: 
+— name: Rename table 
+postgresql_table: 
+table: foo 
+rename: bar 
+— name: Set owner to 
+postgresql_table: 
+name: foo 
+owner: someuser 
+foo 
+to 
+someuser 
+— name: Truncate table foo 
+postgresqL_tabIe: 
+name: foo 
+databases 
+- hosts: 
+root 
+tablenane: foo 
+tableowner: soneuser 
+tasks: 
+— name: Rename table tabtename to bar 
+postgresql_table: 
+table: tablenane 
+rename: bar 
+— name: Set owner to someuser 
+postgresqt_table: 
+name: tablename 
+— name: Truncate table 
+postgresql_table: 
+name: tablenare 
+ 
+
+Ansible Playbooks 
+"Play" 
+- which tasks 
+- which hosts 
+- which user 
+: databases 
+remte_user: root 
+vars: 
+tab Lenane: foo 
+tab Leowner: so—euser 
+tasks: 
+— name: Renae table to bar 
+postgresql_table: 
+table: tablenne 
+rename : bar 
+— name: Set owner to 
+postgresql_table: 
+nane: tablenae 
+— none: Truncate table 
+name: tab Lenam,e 
+ 
+
+Playbook = 1 or more Plays 
+Multiple Plays in a single YAML file 
+Play for Webservers 
+table too to 
+Play for Databases 
+Playbook describes: 
+• how and in which order 
+• at what time and where (on 
+which machines) 
+• what (the modules) should be 
+executed 
+ 
+
+Good practice: Naming Plays 
+hosts: 
+tasks: 
+tauten 
+ane : 
+— name: create directory tor nginx 
+path: 
+state: directory 
+— name; install nginx latest version 
+name: nginx 
+state: latest 
+— name: start nginx 
+name: nginx 
+— table to bar 
+table: 
+bar 
+- name: Truncate table 
+tae tenor 
+ 
+
+Good practice: 
+ano start r,gxn 
+hosts: webservers 
+rea3te_user: root 
+tasks: 
+— name: create directory tor 
+file: 
+path: 'path/ to/nginx/dir 
+state: directory 
+— name; install nginx Latest 
+name: nginx 
+state: latest 
+— name: start nginx 
+name: nginx 
+state: started 
+Where do the hosts 
+values come from? 
+nginx 
+version 
+Naming Plays 
+— hosts; databases 
+remate_user: root 
+tablenane: foo 
+tasks; 
+name: Renam table ( ( to bar 
+postgresql_taDle: 
+table: ( ( 
+rename : bar 
+name: Set to s—user 
+postqresql_table: 
+tablename 
+— name: Truncate table 
+postve 
+tame: tablename 
+ 
+
+Ansible Inventory List 
+Hosts File 
+1ø.24.ø. løe 
+[webservers) 
+lø. 24. e. 1 
+10.24.ø.2 
+[databases) 
+10.24.ø.7 
+10.24.ø.8 
+1ø.24.ø.10 
+[webservers I 
+webl.myserver. com 
+web2.myserver.com 
+(databases) 
+1ø.24.ø.7 
+1ø.24.ø.8 
+— hosts: databases 
+remteeuser: root 
+IP address or hostname 
+Inventory all the machines involved in task executions 
+ 
+
+Hosts File 
+re. 24. a. lee 
+[webservers] 
+le.24.ø.2 
+[databases] 
+le.24.ø.8 
+Ansible Inventory List 
+hosts: 
+Groups multiple IP 
+addresses or host names 
+databases 
+IP address or hostname 
+Cloud servers, virtual or bare metal servers 
+ 
+
+ 
+
+ 
+
+ 
+
+Ansible Tower 
+UI dashboard from Red Hat 
+- centrally store automation tasks 
+- across teams 
+- configure permissions 
+- manage inventory 
+524 
+63 
+48 
+29 
+ 
+
+Ansible 
+- simple YAML 
+- agentless 
+Comparable Tools 
+Puppet and Chef 
+- Ruby more difficult to learn 
+- Installation needed 
+- So need for managing 
+updates on target servers 
+ 
+
+Summary 
+Automation tools make sense for complex environments 
+prevent human error 
+prevent tedious manual work 
+ 
+
+sudo apt install openssh-server 
+
+Npam ip -p 22 
+
+sudo apt install net-tools 
+
+nmap <ip> -p 22 
+
+ 
+
+Ansible 
+[втир А] 
+host 
+host 2 
+h.ost Н 
+Host 1 
+(дгоир А) 
+H0st 2 
+(дгоир В) 
+Host 
+(дгоир В 
+ 
+
+ 
+
+ansible all -i inventory --list-host 
+
+ 
+
+ansible-inventory all -i inventory --graph 
+
+ 
+
+https://docs.ansible.com/ansible/2.9/modules/modules_by_category.html 
+
+ 
+
+https://youtu.be/IOwlnpWPuj0 
+
+ 
+
+https://www.linuxtechi.com/install-kubernetes-k8s-on-ubuntu-20-04/ 
+
+ 
+
+ ANSIBLE SET-UP CONFIG
+
+2 vm of 2 GB  (Exception Ashwin) 
+
+ MasterNode  Node1 
+
+ 
+
+Changed Network Setting changed adapter 2 
+
+Nmap ipadress - p 22  
+
+ 
+
+$ sudo apt update 
+$ sudo apt install software-properties-common 
+$ sudo add-apt-repository --yes --update ppa:ansible/ansible 
+$ sudo apt install ansible 
+ 
+
+ 
+
+setting 
+
+ 
+
+ 
+
+[05:13 PM] trainer 
+
+ 
+
+sudo gedit /etc/ansbile/hosts  
+
+ 
+
+ 
+
+[05:13 PM] trainer 
+
+ 
+
+192.168.10.10 ansible_user=node 
+
+ 
+
+Ansible all -m ping 
+
+ 
+
+network 
+
+ 
+
+attached->Bridge Adapter 
+
+ 
+
+$ssh-keygen 
+
+ 
+
+$ssh-copy-id shahbaz1@192.168.1.7 
+
+ 
+
+ssh shahbaz1@192.168.1.7 
+
+ 
+
+exit 
+
+ 
+
+From <https://teams.microsoft.com/multi-window/?agent=electron&version=21100401115>  
+
+ 
+
+ 
+
+ 
+
+[02:47 PM] trainer 
+
+ 
+
+sodo apt update 
+
+ 
+
+ 
+
+[02:47 PM] trainer 
+
+ 
+
+sudo apt upgrade  
+
+ 
+
+ 
+
+Setting up Passwordless authentication from CN to managing nodes (1) 
+
+ 
+
+Ssh-keygen  
+
+ 
+
+ 
+
+Ansible 
+[втир А] 
+host 
+host 2 
+h.ost Н 
+Host 1 
+(дгоир А) 
+H0st 2 
+(дгоир В) 
+Host 
+(дгоир В 
+ 
+
+ 
+
+ 
+
+The possibility could be, the SSH might not be enabled on your server/system. 
+
+Check sudo systemctl status ssh is Active or not. 
+
+If it's not active, try installing with the help of these commands 
+
+sudo apt update 
+
+sudo apt install openssh-server 
+
+Now try to access the server/system with following command 
+
+ssh username@ip_address 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+we can connect to remote hosts using a password through Ansible it is recommended to set up key-based authentication for easy and secure logins. 
+
+ 
+YAML
+
+
+
+YAML Syntax 
+
+ 
+
+This page provides a basic overview of correct YAML syntax, which is how Ansible playbooks (our configuration management language) are expressed. 
+
+ 
+
+We use YAML because it is easier for humans to read and write than other common data formats like XML or JSON. Further, there are libraries available in most programming languages for working with YAML. 
+
+ 
+
+You may also wish to read Working with playbooks at the same time to see how this is used in practice. 
+
+ 
+
+Every YAML starts with --- which denotes the start of a YAML file. 
+
+ 
+
+YAML Basics 
+
+For Ansible, nearly every YAML file starts with a list. Each item in the list is a list of key/value pairs, commonly called a “hash” or a “dictionary”. So, we need to know how to write lists and dictionaries in YAML. 
+
+ 
+
+There’s another small quirk to YAML. All YAML files (regardless of their association with Ansible or not) can optionally begin with --- and end with .... This is part of the YAML format and indicates the start and end of a document. 
+
+ 
+
+All members of a list are lines beginning at the same indentation level starting with a "- " (a dash and a space): 
+
+ 
+
+--- 
+
+# A list of tasty fruits 
+
+- Apple 
+
+- Orange 
+
+- Strawberry 
+
+- Mango 
+
+... 
+
+A dictionary is represented in a simple key: value form (the colon must be followed by a space): 
+
+ 
+
+# An employee record 
+
+martin: 
+
+  name: Martin D'vloper 
+
+  job: Developer 
+
+  skill: Elite 
+
+More complicated data structures are possible, such as lists of dictionaries, dictionaries whose values are lists or a mix of both: 
+
+ 
+
+# Employee records 
+
+- martin: 
+
+    name: Martin D'vloper 
+
+    job: Developer 
+
+    skills: 
+
+      - python 
+
+      - perl 
+
+      - pascal 
+
+- tabitha: 
+
+    name: Tabitha Bitumen 
+
+    job: Developer 
+
+    skills: 
+
+      - lisp 
+
+      - fortran 
+
+      - erlang 
+
+ 
+
+Dictionaries and lists can also be represented in an abbreviated form if you really want to: 
+
+ 
+
+--- 
+
+martin: {name: Martin D'vloper, job: Developer, skill: Elite} 
+
+['Apple', 'Orange', 'Strawberry', 'Mango'] 
+
+ 
+
+These are called “Flow collections”. 
+
+ 
+
+Ansible doesn’t really use these too much, but you can also specify a boolean value (true/false) in several forms: 
+
+ 
+
+create_key: yes 
+
+needs_agent: no 
+
+knows_oop: True 
+
+likes_emacs: TRUE 
+
+uses_cvs: false 
+
+ 
+
+Use lowercase ‘true’ or ‘false’ for boolean values in dictionaries if you want to be compatible with default yamllint options. 
+
+ 
+
+Values can span multiple lines using | or >.  
+
+ 
+
+Spanning multiple lines using a “Literal Block Scalar” | will include the newlines and any trailing spaces.  
+
+ 
+
+Using a “Folded Block Scalar” > will fold newlines to spaces;  
+
+ 
+
+it’s used to make what would otherwise be a very long line easier to read and edit. In either case the indentation will be ignored. Examples are: 
+
+ 
+
+include_newlines: | 
+
+            exactly as you see 
+
+            will appear these three 
+
+            lines of poetry 
+
+ 
+
+fold_newlines: > 
+
+            this is really a 
+
+            single line of text 
+
+            despite appearances 
+
+While in the above > example all newlines are folded into spaces, there are two ways to enforce a newline to be kept: 
+
+ 
+
+fold_some_newlines: > 
+
+    a 
+
+    b 
+
+ 
+
+    c 
+
+    d 
+
+      e 
+
+    f 
+
+same_as: "a b\nc d\n  e\nf\n" 
+
+ 
+
+Let’s combine what we learned so far in an arbitrary YAML example. This really has nothing to do with Ansible, but will give you a feel for the format: 
+
+ 
+
+--- 
+
+# An employee record 
+
+name: Martin D'vloper 
+
+job: Developer 
+
+skill: Elite 
+
+employed: True 
+
+foods: 
+
+  - Apple 
+
+  - Orange 
+
+  - Strawberry 
+
+  - Mango 
+
+languages: 
+
+  perl: Elite 
+
+  python: Elite 
+
+  pascal: Lame 
+
+education: | 
+
+  4 GCSEs 
+
+  3 A-Levels 
+
+  BSc in the Internet of Things 
+
+ 
+
+That’s all you really need to know about YAML to start writing Ansible playbooks. 
+
+ 
+
+ 
+
+Basic rules. 
+
+• Data elements at the same level in the hierarchy (such as items in the same  
+
+list) must have the same indentation. 
+
+ 
+
+• Items that are children of another item must be indented more than their  
+
+parents. You can also add blank lines for readability. 
+
+ 
+
+Important: 
+
+Only the space character can be used for indentation; tab characters are not 
+
+ 
+
+https://yaml-online-parser.appspot.com/ 
+
+ 
+ANSIBLE REF
+
+Some common words related to Ansible. 
+
+ 
+
+Service/Server − A process on the machine that provides the service. 
+
+ 
+
+Machine − A physical server, VM (virtual machine), or a container. 
+
+ 
+
+Target machine − A machine we are about to configure with Ansible. 
+
+ 
+
+Task − An action (run this, delete that), etc. managed by Ansible. 
+
+ 
+
+Playbook − The YML file where Ansible commands are written and YML is executed on a machine. 
+
+ 
+
+Ansible.cfg – ansible configuration file  
+
+ 
+
+Inventory File – a file that contains all the remote ansible nodes 
+
+ 
+
+ 
+
+Ansible - Ad hoc Commands  
+
+ 
+
+Ad hoc commands are commands which can be run individually to perform quick functions. These commands need not be performed later 
+
+ 
+
+ 
+
+Running AD HOC Commands With Ansible 
+
+ 
+
+• An ad hoc command is a way of executing a single Ansible task quickly.  
+
+They are simple, online operations that can be run without writing a  
+
+playbook. 
+
+ 
+
+• Ad hoc commands are useful for quick tests and changes. For example,  
+
+one can use an ad hoc command to make sure that a certain line exists in  
+
+the /etc/hosts file on a group of servers. One could use another ad hoc  
+
+command to efficiently restart a service on many different machines, or to  
+
+ensure that a particular software package is up-to-date. 
+
+ 
+
+• Use the ansible command to run ad hoc commands: 
+
+ansible host-pattern -m module [-a 'module arguments'] [-i invent 
+
+
+
+ANSIBLE MANAGING ERRORS
+
+Managing Errors 
+
+ 
+
+There are several issues than can occur during a playbook run, mainly related  
+
+to the syntax of either the playbook or any of the templates it uses, or due to  
+
+connectivity issues with the managed clients. Those errors are issued by the  
+
+ansible-playbook command at execution time. 
+
+ 
+
+--syntax-check option, which checks the YAML syntax for the playbook. 
+
+ 
+
+--step command interactively prompts for confirmation that you  
+
+want each task to execute. 
+
+ 
+
+--start-at-task option allows you to start execution of a playbook from a  
+
+specific task. 
+
+ 
+
+ 
+
+Creating encrypted playbooks: 
+
+[testuser@host2 vault]$ ansible-vault create playbook_encrypted.yml 
+
+New Vault password:  
+
+Confirm New Vault password:  
+
+[testuser@host2 vault]$  
+
+[testuser@host2 vault]$ ansible-vault view playbook_encrypted.yml 
+
+Vault password:  
+
+[testuser@host2 vault]$ ansible-vault edit playbook_encrypted.yml 
+
+Vault password:  
+
+[testuser@host2 vault] 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Create ency exsting playbook 
+
+[testuser@host2 vault]$ ansible-vault encrypt playbook_encrypted.yml 
+
+New Vault password:  
+
+Confirm New Vault password:  
+
+[testuser@host2 vault]$  
+
+[testuser@host2 vault]$ ansible-vault decrypt playbook_encrypted.yml 
+
+Vault password:  
+
+[testuser@host2 vault]$ ansible-vault rekey playbook_encrypted.yml 
+
+Vault password:  
+
+[testuser@host2 vault] 
+
+ 
+
+ 
+
+----------------------------------------- 
+
+ 
+
+testuser@host2 myplaybooks]$ cat loop_1.yml --- 
+
+-hosts: myservers 
+
+tasks: 
+
+- name: Run commands 
+
+shell: "{{ item }}" 
+
+loop: 
+
+- "touch one.txt" 
+
+- "ls –lrt > log.txt"  
+
+... 
+
+[testuser@host2 myplaybooks]$  
+
+ 
+
+ANSIBLE LABS
+
+
+ansible thbs_solution -m apt -a 'name=apache2 state=present' -i myInventory.txt -b --ask-pass 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ ansible testgroup  -m file -a 'path=/etc/hosts/'  
+
+ 
+
+- name: Remove file (delete file) 
+
+  file: 
+
+    path: /etc/foo.txt 
+
+    state: absent 
+
+ 
+
+- name: Recursively remove directory 
+
+  file: 
+
+    path: /etc/foo 
+
+    state: absent 
+
+ 
+
+ 
+
+- name: Install the latest version of Apache 
+
+  yum: 
+
+    name: httpd 
+
+    state: latest 
+
+ 
+
+- name: Install apache httpd  (state=present is optional) 
+
+  apt: 
+
+    name: apache2 
+
+    state: present 
+
+ 
+
+Ansible thbs_solution -m apt -a 'name=apache2 state:present' 
+
+ 
+
+Create inventory file 
+
+host0 ansible_host=192.168.33.10 ansible_user=root 
+
+host1 ansible_host=192.168.33.11 ansible_user=root 
+
+ 
+
+ 
+
+ansible -m ping all -i step-01/hosts 
+
+ 
+
+ 
+
+Adhoc Commands 
+
+Create inventory file 
+
+host0 ansible_host=192.168.33.10 ansible_user=root 
+
+ 
+
+ansible -i step-02/hosts -m shell -a 'uname -a' host0 
+
+ 
+
+ 
+
+ 
+
+ansible thbs_solutions -m shell -a 'uname -a'  -i step-02/hosts 
+
+ 
+
+ 
+
+ 
+
+ansible -i step-02/hosts -m copy -a 'src=/etc/hosts dest=/tmp/'host0 
+
+ 
+
+Ansible prod  -m copy -a 'src=/etc/hosts dest=/tmp 
+
+ 
+
+Ansible prod  -m copy -a 'src=/etc/hosts dest=/tmp 
+
+ 
+
+ 
+
+ 
+
+Many hosts, same command 
+
+ 
+
+Lets say we want to get some facts about the node, and, for instance, know which Ubuntu version we have deployed on nodes, it's pretty easy: 
+
+ansible -i step-02/hosts -m shell -a 'grep DISTRIB_RELEASE /etc/lsb-release' all 
+ 
+
+all is a shortcut meaning 'all hosts found in inventory file'. It would return: 
+
+Many more facts 
+
+ansible -i step-02/hosts -m setup host0 
+
+we wanted more information (ip addresses, RAM size, etc...). The solution comes from another really handy module (weirdly) called setup: it specializes in node's facts gathering. 
+
+ 
+
+ 
+
+Transferring file to many servers/machines 
+
+$ Ansible abc -m copy -a "src = /etc/yum.conf dest = /tmp/yum.conf" 
+
+ 
+
+Creating a new directory 
+
+$ Ansible abc -m file -a "dest = /path/user1/new mode = 777 owner = user1 group =  
+
+user1 state = directory"  
+
+ 
+
+Deleting whole directory and files 
+
+$ Ansible abc -m file -a "dest = /path/user1/new state = absent" 
+
+ 
+
+ 
+
+Managing Packages 
+
+ 
+
+The Ad-hoc commands are available for yum and apt. Following are some Ad-hoc commands using  
+
+yum. 
+
+ 
+
+The following command checks if yum package is installed or not, but does not update it. 
+
+ 
+
+$ Ansible abc -m yum -a "name = demo-tomcat-1 state = present" 
+
+ 
+
+------------------------------------------------------- 
+
+Creating file by adhoc command  
+
+ 
+
+Ansible -m file -a 'path=/tmp/surekha.txt state=present' all 
+
+ 
+
+------------------------------------------------------------------- 
+
+Delete file by adhoc command  
+
+ 
+
+Ansible -m file -a 'path=/tmp/surekha.txt state=absent' all 
+
+ 
+
+-------------- Creation of playbook --- 
+
+ ANSIBLE HANDLERS AND ROLES
+
+ 
+
+ 
+
+--- 
+
+- name: learning handler concept 
+
+  hosts: all 
+
+  become: yes 
+
+  tasks: 
+
+    - name: Install apache httpd  (state=present is optional) 
+
+      apt: 
+
+        name: apache2 
+
+        state: present 
+
+  handlers: 
+
+    - name: restart apache 
+
+      service: 
+
+       name: apache2 
+
+       state: restarted   
+
+   
+
+ 
+
+ 
+
+ 
+
+Ansible Roles 
+
+Ansible role is the primary mechanism for breaking a playbook into multiple  
+
+files.  
+
+ 
+
+This simplifies writing complex playbooks, and it makes them easier to reuse components 
+
+ 
+
+ 
+
+Advantages of Ansible roles:  
+
+ 
+
+• Roles group content, allowing easy sharing of code with others. 
+
+• Roles can be written that define the essential elements of a system type:  
+
+web server, database server, Git repository, or other purpose 
+
+• Roles make larger projects more manageable. 
+
+• Roles can be developed in parallel by different administrators 
+
+ 
+
+ 
+
+--- 
+
+- hosts: webservers 
+
+  roles: 
+
+    - common 
+
+    - webservers 
+
+ 
+
+Creating Ansible roles (ansible-galaxy command) 
+
+ 
+
+[ testuser•ost2 nbs roles]$ ansible-galaxy init /home/testuser/nbs_roles/webserver - 
+Role /home/testuser/nbs_roles/webserver was created successfully 
+[testuser•ost2 nbs roles]$ 
+[testuser•ost2 nbs roles]$ tree webserver 
+defaults 
+main. ym1 
+files 
+handlers 
+main. ym1 
+meta 
+main. yml 
+REAt»-1E. md 
+tasks 
+main. yml 
+templates 
+tests 
+inve ntory 
+test. yml 
+vars 
+main. yml 
+8 directories, 8 files 
+[testuse•ost2 nbs roles]$ 
+-of f line 
+ 
+
+ 
+
+Subdirectory 
+defaults 
+f i les 
+handlers 
+meta 
+tasks 
+templates 
+tests 
+Function 
+The yml file in this directory contains the default values Of role 
+variables that can be Overwritten when the role is used. These variables 
+have low precedence and are intended to be changed and customized in 
+plays. 
+This directory contains static files that are referenced by role tasks. 
+The main. yml file in this directory contains the role's handler definitions. 
+The main. file in this directory contains information about the role, 
+including author, license, platforms, and optional role dependencies. 
+The main. yml file in this directory contains the role's task definitions. 
+This directory contains Jinja2 templates that are referenced by role tasks. 
+This directory can contain an inventory and test . ym1 playbook that can 
+be used to test the role. 
+The file in this directory defines the role's variable values. 
+Often these variables are used for internal purposes within the role. These 
+variables have high precedence, and are not intended to be changed when 
+used in a playbook. 
+ 
+ 
